@@ -1,0 +1,9 @@
+requests
+langchain-ollama
+langchain-chroma
+langchain-community
+langchain-google-genai
+langchain-groq
+PyYAML
+tiktoken
+neo4j

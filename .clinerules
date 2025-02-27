@@ -1,0 +1,149 @@
+# Project Intelligence: LLM Notion Loader
+
+## Code Organization
+
+### File Structure Patterns
+- Core logic in `src/` directory
+- Configuration files in `src/config/`
+- Store implementations in `src/storage/`
+- LLM integrations in `src/llm/`
+- Utility functions in `src/utils/`
+
+### Naming Conventions
+- Store classes end with 'Store' (e.g., ChromaStore)
+- Configuration files use lowercase with underscores
+- Module names are descriptive and lowercase
+- Class names use PascalCase
+- Function/method names use snake_case
+
+## Implementation Patterns
+
+### Document Stores
+- Always implement BaseStore abstract methods
+- Include store-specific initialization
+- Handle connection management
+- Implement proper cleanup
+- Error handling for store operations
+
+### Configuration
+- Use environment variables for secrets
+- YAML for store configuration
+- Environment variable interpolation in YAML
+- Store-specific settings blocks
+- Logging configuration in separate file
+
+### Error Handling
+- Graceful degradation on store failures
+- Detailed error messages in logs
+- Statistics tracking for errors
+- Recovery mechanisms where possible
+- Clean up resources on failure
+
+## Development Workflow
+
+### Code Changes
+1. Update configuration if needed
+2. Implement store-specific changes
+3. Update logging configuration
+4. Update documentation
+5. Test with all enabled stores
+
+### Testing Approach
+1. Test with small dataset first
+2. Verify all enabled stores
+3. Check error handling
+4. Validate logging output
+5. Monitor performance metrics
+
+### Database Operations
+1. Verify store connectivity
+2. Initialize required schemas
+3. Check permissions
+4. Test basic operations
+5. Clean up test data
+
+## Project Preferences
+
+### Documentation
+- Maintain memory bank files
+- Update README for major changes
+- Document configuration changes
+- Keep logging examples current
+- Include setup instructions
+
+### Code Style
+- Type hints for all functions
+- Docstrings for classes and methods
+- Clear error messages
+- Consistent logging format
+- Clean code organization
+
+### Performance
+- Monitor memory usage
+- Track processing times
+- Log performance metrics
+- Optimize database operations
+- Manage connection pools
+
+## Critical Paths
+
+### Sync Process
+1. Load configuration
+2. Initialize stores
+3. Fetch Notion pages
+4. Process documents
+5. Update stores
+6. Track statistics
+
+### Error Recovery
+1. Log error details
+2. Clean up resources
+3. Update statistics
+4. Notify via logging
+5. Handle store-specific errors
+
+### Store Management
+1. Check configuration
+2. Initialize connections
+3. Verify permissions
+4. Handle operations
+5. Clean up resources
+
+## User Preferences
+
+### Configuration
+- YAML for readability
+- Environment variables for secrets
+- Clear logging levels
+- Flexible store enablement
+- Simple CLI interface
+
+### Operation
+- Clear progress indication
+- Detailed error messages
+- Performance statistics
+- Simple command structure
+- Configuration verification
+
+### Maintenance
+- Easy store enabling/disabling
+- Simple configuration updates
+- Clear logging output
+- Statistics reporting
+- Error recovery options
+
+## Evolution Notes
+
+### Version Control
+- Feature branches for additions
+- Clear commit messages
+- Version tagging
+- Documentation updates
+- Migration scripts
+
+### System Growth
+- Store implementations
+- LLM providers
+- Feature additions
+- Performance optimization
+- Tool enhancements

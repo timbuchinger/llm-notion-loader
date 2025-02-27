@@ -1,0 +1,818 @@
+subject,relationship,object,note_id,note_title
+user,restarts,nagios-nrpe-server,56fc9399-a462-492c-8d7b-19453c95b7a5,Test Critical Alert
+user,changes,python3 to python3-test,56fc9399-a462-492c-8d7b-19453c95b7a5,Test Critical Alert
+user,edits,/etc/nagios/nrpe.cfg,56fc9399-a462-492c-8d7b-19453c95b7a5,Test Critical Alert
+Marc,requested,being tagged in alerts-log,56fc9399-a462-492c-8d7b-19453c95b7a5,Test Critical Alert
+Marc,advised,reverting changes after test,56fc9399-a462-492c-8d7b-19453c95b7a5,Test Critical Alert
+Marc,instructed to,ssh to a celery server,56fc9399-a462-492c-8d7b-19453c95b7a5,Test Critical Alert
+Marc,recommended,changing nrpe config,56fc9399-a462-492c-8d7b-19453c95b7a5,Test Critical Alert
+Marc,suggested,method to generate a critical alert,56fc9399-a462-492c-8d7b-19453c95b7a5,Test Critical Alert
+nrpe config,modified to check for,process containing 'python3-test',56fc9399-a462-492c-8d7b-19453c95b7a5,Test Critical Alert
+user,re-checks,supervisor status,fc0697d8-bd21-418f-8cd6-0f034cbec789,Clear Celery Jobs
+user,starts,all processes,fc0697d8-bd21-418f-8cd6-0f034cbec789,Clear Celery Jobs
+user,executes,flushall command,fc0697d8-bd21-418f-8cd6-0f034cbec789,Clear Celery Jobs
+user,accesses,redis-cli,fc0697d8-bd21-418f-8cd6-0f034cbec789,Clear Celery Jobs
+user,stops,all processes,fc0697d8-bd21-418f-8cd6-0f034cbec789,Clear Celery Jobs
+user,checks,supervisor status,fc0697d8-bd21-418f-8cd6-0f034cbec789,Clear Celery Jobs
+user,activates,virtual environment,fc0697d8-bd21-418f-8cd6-0f034cbec789,Clear Celery Jobs
+user,navigates_to,/home/bucketlist/blcorp/configs/staging/,fc0697d8-bd21-418f-8cd6-0f034cbec789,Clear Celery Jobs
+user,configured,sftp2 in Django admin to use sftpmaster user,abf1d01d-1d94-4db5-9106-01ad549c169a,CSV Sync
+user,tested,paramiko connection to sftp2.bucketlist.org,abf1d01d-1d94-4db5-9106-01ad549c169a,CSV Sync
+user,executed,sudo tail -n 500 /var/log/auth.log | grep 'sshd',abf1d01d-1d94-4db5-9106-01ad549c169a,CSV Sync
+user,checked,SSH auth logs,abf1d01d-1d94-4db5-9106-01ad549c169a,CSV Sync
+user,executed,"run_user_sync_task_on_company(company.pk, 'sftp_csv', 'pre_sync')",abf1d01d-1d94-4db5-9106-01ad549c169a,CSV Sync
+user,imported,tasks from company.backends,abf1d01d-1d94-4db5-9106-01ad549c169a,CSV Sync
+user,queried,Company.objects.get(sub_domain='nationalfootballleague'),abf1d01d-1d94-4db5-9106-01ad549c169a,CSV Sync
+user,imported,Company from company.models,abf1d01d-1d94-4db5-9106-01ad549c169a,CSV Sync
+user,executed,./manage.py shell,abf1d01d-1d94-4db5-9106-01ad549c169a,CSV Sync
+user,navigated to,blcorp-website/src,abf1d01d-1d94-4db5-9106-01ad549c169a,CSV Sync
+user,activated virtual environment,blcorp,abf1d01d-1d94-4db5-9106-01ad549c169a,CSV Sync
+user,SSHed into,webserver1,abf1d01d-1d94-4db5-9106-01ad549c169a,CSV Sync
+system,logged,Authentication failed,abf1d01d-1d94-4db5-9106-01ad549c169a,CSV Sync
+sftp2.bucketlist.org,is used for,SFTP2 by the webserver for user sync,abf1d01d-1d94-4db5-9106-01ad549c169a,CSV Sync
+key,was missing in,authorized_key of sftpmaster user,abf1d01d-1d94-4db5-9106-01ad549c169a,CSV Sync
+termination of employees,triggered,increase in celery log size,5a545d90-178b-4929-a547-490f5d53f309,Redis CPU
+termination of employees,generated,"243,738 tasks to delete notifications",5a545d90-178b-4929-a547-490f5d53f309,Redis CPU
+"243,738 tasks",caused,high memory usage in Redis,5a545d90-178b-4929-a547-490f5d53f309,Redis CPU
+high memory usage in Redis,approached,100% memory usage threshold,5a545d90-178b-4929-a547-490f5d53f309,Redis CPU
+each user,had,multiple outstanding notifications,5a545d90-178b-4929-a547-490f5d53f309,Redis CPU
+outstanding notifications,required,individual deletion tasks,5a545d90-178b-4929-a547-490f5d53f309,Redis CPU
+individual deletion tasks,led to,rate limiting,5a545d90-178b-4929-a547-490f5d53f309,Redis CPU
+rate limiting,was implemented to,delay tasks,5a545d90-178b-4929-a547-490f5d53f309,Redis CPU
+ssh,uses,specific key,37bc11c4-d4c2-4de6-a73c-f9ac6174571d,SSH with Specific Key
+ssh,connects to,ubuntu@44.219.57.246,37bc11c4-d4c2-4de6-a73c-f9ac6174571d,SSH with Specific Key
+ssh,ignores,default identities,37bc11c4-d4c2-4de6-a73c-f9ac6174571d,SSH with Specific Key
+ssh,specifies,/dev/null as config file,37bc11c4-d4c2-4de6-a73c-f9ac6174571d,SSH with Specific Key
+specific key,located at,~/.ssh/id_openvpn,37bc11c4-d4c2-4de6-a73c-f9ac6174571d,SSH with Specific Key
+CrowdStrike,starts in,lab,e502d27e-0998-4c6d-a9d8-534f0ed66330,CrowdStrike
+CrowdStrike,moves to,qa,e502d27e-0998-4c6d-a9d8-534f0ed66330,CrowdStrike
+CrowdStrike,moves to,staging,e502d27e-0998-4c6d-a9d8-534f0ed66330,CrowdStrike
+CrowdStrike,moves to,dev,e502d27e-0998-4c6d-a9d8-534f0ed66330,CrowdStrike
+CrowdStrike,plans to implement,IPS by the end of calendar year,e502d27e-0998-4c6d-a9d8-534f0ed66330,CrowdStrike
+CrowdStrike,plans to implement,SIEM in the start of next year,e502d27e-0998-4c6d-a9d8-534f0ed66330,CrowdStrike
+Terraform,was discussed,during the meeting,02031d3f-7329-4a36-a0ea-f1320afa2bd8,1on1 - September 6th
+Deployment,occurred on,August 16th,02031d3f-7329-4a36-a0ea-f1320afa2bd8,1on1 - September 6th
+Deployment,occurred on,July 12th,02031d3f-7329-4a36-a0ea-f1320afa2bd8,1on1 - September 6th
+Deployment,occurred on,August 2nd,02031d3f-7329-4a36-a0ea-f1320afa2bd8,1on1 - September 6th
+Alaadin,handled,two Jira tickets,02031d3f-7329-4a36-a0ea-f1320afa2bd8,1on1 - September 6th
+Alaadin,conducted,policy review,02031d3f-7329-4a36-a0ea-f1320afa2bd8,1on1 - September 6th
+Ansible,was discussed,during the meeting,02031d3f-7329-4a36-a0ea-f1320afa2bd8,1on1 - September 6th
+DB migration,occurred on,August 9th,02031d3f-7329-4a36-a0ea-f1320afa2bd8,1on1 - September 6th
+DB migration,occurred on,August 10th,02031d3f-7329-4a36-a0ea-f1320afa2bd8,1on1 - September 6th
+CA Django,upgraded on,August 29th,02031d3f-7329-4a36-a0ea-f1320afa2bd8,1on1 - September 6th
+US Django,upgraded on,September 6th,02031d3f-7329-4a36-a0ea-f1320afa2bd8,1on1 - September 6th
+HRIS,merged,with another system,02031d3f-7329-4a36-a0ea-f1320afa2bd8,1on1 - September 6th
+SFTP,assigned to,Ptashi,02031d3f-7329-4a36-a0ea-f1320afa2bd8,1on1 - September 6th
+SFTP,could be assigned to,another person,02031d3f-7329-4a36-a0ea-f1320afa2bd8,1on1 - September 6th
+OpsGenie,was discussed,during the meeting,02031d3f-7329-4a36-a0ea-f1320afa2bd8,1on1 - September 6th
+Loki log encryption,had an issue,during the meeting,02031d3f-7329-4a36-a0ea-f1320afa2bd8,1on1 - September 6th
+Smoke test automation,was discussed,during the meeting,02031d3f-7329-4a36-a0ea-f1320afa2bd8,1on1 - September 6th
+Engagement level setting,could be assigned to,another person,02031d3f-7329-4a36-a0ea-f1320afa2bd8,1on1 - September 6th
+user,restarted,service,21d9edd4-dce0-4ff2-a54f-54e2792eae02,Alert Reduction
+user,corrected,IP address in config file,21d9edd4-dce0-4ff2-a54f-54e2792eae02,Alert Reduction
+user,restarted,nagios-nrpe-server service,21d9edd4-dce0-4ff2-a54f-54e2792eae02,Alert Reduction
+user,edited,nrpe configuration file,21d9edd4-dce0-4ff2-a54f-54e2792eae02,Alert Reduction
+systemd,started,Nagios Remote Plugin Executor,21d9edd4-dce0-4ff2-a54f-54e2792eae02,Alert Reduction
+systemd,reported,failure of nagios-nrpe-server.service,21d9edd4-dce0-4ff2-a54f-54e2792eae02,Alert Reduction
+nrpe,failed to bind,port 5666 on 10.132.237.154,21d9edd4-dce0-4ff2-a54f-54e2792eae02,Alert Reduction
+nagios-nrpe-server.service,exited with,failure status,21d9edd4-dce0-4ff2-a54f-54e2792eae02,Alert Reduction
+user,needs to be connected as,the owner with psql,e88dd2d4-c36f-4889-bd06-d57e575f4fcd,PostgreSQL table owner
+psql,connects to,PostgreSQL,e88dd2d4-c36f-4889-bd06-d57e575f4fcd,PostgreSQL table owner
+Table,requires,owner privileges,e88dd2d4-c36f-4889-bd06-d57e575f4fcd,PostgreSQL table owner
+command,allows to see,table owner,e88dd2d4-c36f-4889-bd06-d57e575f4fcd,PostgreSQL table owner
+command,lists,all tables with its owner,e88dd2d4-c36f-4889-bd06-d57e575f4fcd,PostgreSQL table owner
+you,need to get,connection string from DO for that user,e88dd2d4-c36f-4889-bd06-d57e575f4fcd,PostgreSQL table owner
+you,do,psql with the connection string for the user,e88dd2d4-c36f-4889-bd06-d57e575f4fcd,PostgreSQL table owner
+ALTER TABLE public.account_emailaddress,changes owner to,bucketlist_live,e88dd2d4-c36f-4889-bd06-d57e575f4fcd,PostgreSQL table owner
+CREATE EXTERNAL TABLE,defines,cloudtrail_logs_blcorp_management,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,eventVersion,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,userIdentity,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,eventTime,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,eventSource,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,eventName,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,awsRegion,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,sourceIpAddress,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,userAgent,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,errorCode,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,errorMessage,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,requestParameters,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,responseElements,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,additionalEventData,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,requestId,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,eventId,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,resources,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,eventType,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,apiVersion,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,readOnly,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,recipientAccountId,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,serviceEventDetails,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,sharedEventID,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,vpcEndpointId,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has column,tlsDetails,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,uses,JsonSerDe,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,uses,CloudTrailInputFormat,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,uses,HiveIgnoreKeyTextOutputFormat,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,is stored in,s3://blcorp-management-cloudtrail/cloudtrail/AWSLogs/o-cdmv6ntjhq/,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+cloudtrail_logs_blcorp_management,has property,classification=cloudtrail,9ed22669-60b9-4a99-acb0-0ce371c56d0f,Cloudtrail and Athena
+rules,enable,new exporters,d0574bd6-ff75-4c21-b952-1b43d36a55e0,Environment Rebuild
+new exporters,include,Redis,d0574bd6-ff75-4c21-b952-1b43d36a55e0,Environment Rebuild
+new exporters,include,NGINX,d0574bd6-ff75-4c21-b952-1b43d36a55e0,Environment Rebuild
+metric collection,enable,Promtail,d0574bd6-ff75-4c21-b952-1b43d36a55e0,Environment Rebuild
+user,runs,docker compose command,1e389635-ab16-4b5b-990d-4103553d4875,Wireguard
+user,installs,Docker compose plugin,1e389635-ab16-4b5b-990d-4103553d4875,Wireguard
+Docker compose plugin,is installed by,user,1e389635-ab16-4b5b-990d-4103553d4875,Wireguard
+docker compose,executes,certbot command,1e389635-ab16-4b5b-990d-4103553d4875,Wireguard
+certbot,performs,certonly operation,1e389635-ab16-4b5b-990d-4103553d4875,Wireguard
+certonly operation,uses,webroot method,1e389635-ab16-4b5b-990d-4103553d4875,Wireguard
+certonly operation,targets,example.org,1e389635-ab16-4b5b-990d-4103553d4875,Wireguard
+certonly operation,performs,dry-run,1e389635-ab16-4b5b-990d-4103553d4875,Wireguard
+webroot method,is configured with,/var/www/certbot/,1e389635-ab16-4b5b-990d-4103553d4875,Wireguard
+user,creates,secrets for SQL-Query-Exporter,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+user,retrieves,Grafana admin password,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+user,resolves,IngressRoute error,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+user,creates,basic auth for Traefik,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+user,seals,secrets,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+user,installs,cert-manager,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+user,generates,password hash,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+user,downloads,Weave GitOps,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+user,bootstraps,Flux,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+user,installs,Ingress-NGINX,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+user,disables,Traefik,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+user,installs,kubectl,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+user,installs,kube-capacity,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+user,installs,kubecolor,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+user,installs,kubens,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+user,installs,kubectx,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+secrets,are sealed using,kubeseal,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+secrets,are created using,kubectl,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+curl,downloads,installation script,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+installation script,installs,K3S,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+K3S,creates,kubeconfig file,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+kubeconfig file,is moved to,~/.kube/config,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+Flux,connects to,Git repository,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+Weave GitOps,installs,gitops,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+password hash,is created using,bcrypt-cli,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+basic auth,is encoded using,base64,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+IngressRoute error,is resolved by,changing api version,e6e84e83-1a23-445d-82c6-c4a173d27ba3,K3S
+blcorp-ca-media2,is categorized as,old public S3 bucket,6abb1da3-cf85-4c9a-aff9-ccbdbb785c6f,BRR-3009 & BRR-3007 - OneTrust AWS Alerts
+blcorp-media,is categorized as,old public S3 bucket,6abb1da3-cf85-4c9a-aff9-ccbdbb785c6f,BRR-3009 & BRR-3007 - OneTrust AWS Alerts
+blcorp-stg-aws-staticfiles,is categorized as,new public S3 bucket,6abb1da3-cf85-4c9a-aff9-ccbdbb785c6f,BRR-3009 & BRR-3007 - OneTrust AWS Alerts
+Day,is associated with,new MFA,6abb1da3-cf85-4c9a-aff9-ccbdbb785c6f,BRR-3009 & BRR-3007 - OneTrust AWS Alerts
+rodrigo,is associated with,new MFA,6abb1da3-cf85-4c9a-aff9-ccbdbb785c6f,BRR-3009 & BRR-3007 - OneTrust AWS Alerts
+dale,is associated with,new MFA,6abb1da3-cf85-4c9a-aff9-ccbdbb785c6f,BRR-3009 & BRR-3007 - OneTrust AWS Alerts
+paul,is associated with,MFA,6abb1da3-cf85-4c9a-aff9-ccbdbb785c6f,BRR-3009 & BRR-3007 - OneTrust AWS Alerts
+deborah,is associated with,MFA,6abb1da3-cf85-4c9a-aff9-ccbdbb785c6f,BRR-3009 & BRR-3007 - OneTrust AWS Alerts
+John,is associated with,MFA,6abb1da3-cf85-4c9a-aff9-ccbdbb785c6f,BRR-3009 & BRR-3007 - OneTrust AWS Alerts
+Brian,is associated with,MFA,6abb1da3-cf85-4c9a-aff9-ccbdbb785c6f,BRR-3009 & BRR-3007 - OneTrust AWS Alerts
+bamba,is associated with,MFA,6abb1da3-cf85-4c9a-aff9-ccbdbb785c6f,BRR-3009 & BRR-3007 - OneTrust AWS Alerts
+irfan,is associated with,MFA,6abb1da3-cf85-4c9a-aff9-ccbdbb785c6f,BRR-3009 & BRR-3007 - OneTrust AWS Alerts
+Duplicate Sync Emails,were resolved by,Restarting Celery,d575805b-cfda-4a7a-a78d-4e67402c99d0,Duplicate Sync Emails in QA
+Restarting Celery,resolved,Duplicate Sync Emails in QA,d575805b-cfda-4a7a-a78d-4e67402c99d0,Duplicate Sync Emails in QA
+Bitbucket Pipelines Runner,requires,Docker,b29f4496-0ee9-4f73-8e5f-114e1b482355,Bitbucket Pipelines Runner
+Bitbucket Pipelines Runner,requires,Bitbucket agent,b29f4496-0ee9-4f73-8e5f-114e1b482355,Bitbucket Pipelines Runner
+Bitbucket agent,can be configured with,custom command,b29f4496-0ee9-4f73-8e5f-114e1b482355,Bitbucket Pipelines Runner
+custom command,includes,-d,b29f4496-0ee9-4f73-8e5f-114e1b482355,Bitbucket Pipelines Runner
+pipelines,run on,self.hosted,b29f4496-0ee9-4f73-8e5f-114e1b482355,Bitbucket Pipelines Runner
+pipelines,run on,linux,b29f4496-0ee9-4f73-8e5f-114e1b482355,Bitbucket Pipelines Runner
+pipelines,run on,digitalocean,b29f4496-0ee9-4f73-8e5f-114e1b482355,Bitbucket Pipelines Runner
+Network Security Policy,includes,3.0,a315c410-9fea-485f-a92c-0d3f88c7df9d,Policy Review
+Network Security Policy,includes,3.1,a315c410-9fea-485f-a92c-0d3f88c7df9d,Policy Review
+Network Security Policy,includes,3.2,a315c410-9fea-485f-a92c-0d3f88c7df9d,Policy Review
+Network Security Policy,includes,3.5,a315c410-9fea-485f-a92c-0d3f88c7df9d,Policy Review
+Network Security Policy,includes,3.9,a315c410-9fea-485f-a92c-0d3f88c7df9d,Policy Review
+3.1,includes,3.1.1,a315c410-9fea-485f-a92c-0d3f88c7df9d,Policy Review
+Business Continuity,includes,4.2,a315c410-9fea-485f-a92c-0d3f88c7df9d,Policy Review
+Terraform,is run by,user,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+postgis,is created as extension in,bucketlist_sandbox,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+postgis_topology,is created as extension in,bucketlist_sandbox,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+postgres,is set as owner of,public schema,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+postgres,is granted all privileges on,bucketlist_sandbox,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+bucketlist_dev,is granted all privileges on,bucketlist_sandbox,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+bucketlist_dev,is set as owner of,bucketlist_sandbox,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+pg_restore,uses port,25060,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+pg_restore,uses user,doadmin,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+pg_restore,connects to host,bl-nyc3-sandbox-db-do-user-1198627-0.b.db.ondigitalocean.com,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+local_settings.py,is obtained by,user,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+NGINX config file,is reviewed by,user,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+create_users.yml,is executed by,ansible-playbook,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+ansible-playbook,uses inventory file,inventory_sandbox.ini,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+ansible-playbook,sets user,root,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+ansible-playbook,uses SSH private key,~/.ssh/id_root,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+ansible-playbook,sets user,tim,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+ansible-playbook,uses inventory file,inventory_sandbox2.ini,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+ansible-playbook,sets build number,5840,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+2.pre-reqs.yml,is executed by,ansible-playbook,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+3.deployment.yml,is executed by,ansible-playbook,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+bucketlist_sandbox,is dropped from,defaultdb,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+bucketlist_sandbox,is created in,PostgreSQL,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+bucketlist_ci,is granted all privileges on,bucketlist_sandbox,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+bucketlist_staging,is granted all privileges on,bucketlist_sandbox,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+blcorp_develop,is dumped by,pg_dump,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+pg_dump,uses user,doadmin,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+pg_dump,connects to host,blcorp-db-01-nyc3-do-user-1198627-0.db.ondigitalocean.com,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+pg_dump,uses port,25060,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+blcorp_sandbox,is restored by,pg_restore,0180bb76-9873-42ce-88d9-d6a24eea31cf,Environment Rebuild
+postgis,is used for,Filter experiences by location,5a43af50-342e-42f5-981b-c9581733a874,BRR-2804 - PostgreSQL Version Consolidation
+postgis,is installed in,all environments,5a43af50-342e-42f5-981b-c9581733a874,BRR-2804 - PostgreSQL Version Consolidation
+postgis_topology,is installed in,some environments,5a43af50-342e-42f5-981b-c9581733a874,BRR-2804 - PostgreSQL Version Consolidation
+Tim Buchinger,is looking at,discrepancies between extension versions,5a43af50-342e-42f5-981b-c9581733a874,BRR-2804 - PostgreSQL Version Consolidation
+Version 11,is not available in,DO,5a43af50-342e-42f5-981b-c9581733a874,BRR-2804 - PostgreSQL Version Consolidation
+Irfan,uses,postgis for one rarely used feature,5a43af50-342e-42f5-981b-c9581733a874,BRR-2804 - PostgreSQL Version Consolidation
+Irfan,does not know if,topology is needed,5a43af50-342e-42f5-981b-c9581733a874,BRR-2804 - PostgreSQL Version Consolidation
+Upgrade dialog,says,12 and 13 are OK,5a43af50-342e-42f5-981b-c9581733a874,BRR-2804 - PostgreSQL Version Consolidation
+14 and 15,are incompatible due to,extensions,5a43af50-342e-42f5-981b-c9581733a874,BRR-2804 - PostgreSQL Version Consolidation
+solution,involves,supervisorctl status all,a42d8247-22ce-4574-a294-2975ebab4dc3,Supervisor - unix:///tmp/supervisor.sock no such file
+solution,involves,/usr/bin/supervisord,a42d8247-22ce-4574-a294-2975ebab4dc3,Supervisor - unix:///tmp/supervisor.sock no such file
+solution,involves,source /home/bucketlist/blcorp/bin/activate,a42d8247-22ce-4574-a294-2975ebab4dc3,Supervisor - unix:///tmp/supervisor.sock no such file
+solution,involves,cd /home/bucketlist/blcorp/configs/staging/,a42d8247-22ce-4574-a294-2975ebab4dc3,Supervisor - unix:///tmp/supervisor.sock no such file
+Supervisor,does not work,after reboot,a42d8247-22ce-4574-a294-2975ebab4dc3,Supervisor - unix:///tmp/supervisor.sock no such file
+running,causes,error message,a42d8247-22ce-4574-a294-2975ebab4dc3,Supervisor - unix:///tmp/supervisor.sock no such file
+error message,indicates,unix:///tmp/supervisor.sock no such file,a42d8247-22ce-4574-a294-2975ebab4dc3,Supervisor - unix:///tmp/supervisor.sock no such file
+additional information,available at,https://bucketlist.atlassian.net/wiki/spaces/BTD/pages/428769292/Live+Cloud+Architecture+Details+Server+Creation+and+Conf,a42d8247-22ce-4574-a294-2975ebab4dc3,Supervisor - unix:///tmp/supervisor.sock no such file
+solution,involved,starting Celery,701bc97a-96d6-471e-ac7d-222bddea71f3,Celery not processing
+solution,involved,stopping Celery,701bc97a-96d6-471e-ac7d-222bddea71f3,Celery not processing
+logs,did not contain,errors,701bc97a-96d6-471e-ac7d-222bddea71f3,Celery not processing
+servers,were restarted,all,701bc97a-96d6-471e-ac7d-222bddea71f3,Celery not processing
+Celery servers,were processing,jobs,701bc97a-96d6-471e-ac7d-222bddea71f3,Celery not processing
+Celery beat,was scheduling,jobs,701bc97a-96d6-471e-ac7d-222bddea71f3,Celery not processing
+Dev environment,uses,MS Teams,864d73ef-62d6-439e-a728-b79d5181cbd9,"Dev environment validation - Dec 1, 2023"
+Dev environment,lacks,SSO,864d73ef-62d6-439e-a728-b79d5181cbd9,"Dev environment validation - Dec 1, 2023"
+Dev environment,may use,Gmail,864d73ef-62d6-439e-a728-b79d5181cbd9,"Dev environment validation - Dec 1, 2023"
+Dev environment,may use,Outlook,864d73ef-62d6-439e-a728-b79d5181cbd9,"Dev environment validation - Dec 1, 2023"
+Dev environment,may use,Slack,864d73ef-62d6-439e-a728-b79d5181cbd9,"Dev environment validation - Dec 1, 2023"
+Dev environment,schedules,Celery tasks,864d73ef-62d6-439e-a728-b79d5181cbd9,"Dev environment validation - Dec 1, 2023"
+Dev environment,uses,Ruby package,864d73ef-62d6-439e-a728-b79d5181cbd9,"Dev environment validation - Dec 1, 2023"
+Dev environment,considers running,unit tests against the server,864d73ef-62d6-439e-a728-b79d5181cbd9,"Dev environment validation - Dec 1, 2023"
+Dev environment,uses,ADP,864d73ef-62d6-439e-a728-b79d5181cbd9,"Dev environment validation - Dec 1, 2023"
+Dev environment,uses,Beekeeper,864d73ef-62d6-439e-a728-b79d5181cbd9,"Dev environment validation - Dec 1, 2023"
+Dev environment,requires,Confluence page,864d73ef-62d6-439e-a728-b79d5181cbd9,"Dev environment validation - Dec 1, 2023"
+Dev environment,uses,Ruby Sass 3.7.4,864d73ef-62d6-439e-a728-b79d5181cbd9,"Dev environment validation - Dec 1, 2023"
+Dev environment,should set,DEBUG=False on develop server,864d73ef-62d6-439e-a728-b79d5181cbd9,"Dev environment validation - Dec 1, 2023"
+Ruby package,is,less,864d73ef-62d6-439e-a728-b79d5181cbd9,"Dev environment validation - Dec 1, 2023"
+Ruby Sass 3.7.4,is used for,compiling scss files,864d73ef-62d6-439e-a728-b79d5181cbd9,"Dev environment validation - Dec 1, 2023"
+Redis,is run as,redis user,b6b79846-174b-4841-a955-84d92bc8b394,Redis Failed to Start
+running,was successful,redis-server manually,b6b79846-174b-4841-a955-84d92bc8b394,Redis Failed to Start
+Redis service,failed to start,after a reboot,b6b79846-174b-4841-a955-84d92bc8b394,Redis Failed to Start
+current log file,was owned by,bucketlist user,b6b79846-174b-4841-a955-84d92bc8b394,Redis Failed to Start
+Solution,involves,sudo chown redis:redis /var/log/redis/redis-server.log,b6b79846-174b-4841-a955-84d92bc8b394,Redis Failed to Start
+Bianca,uses,JavaScript,04b05a80-761a-42c4-8a48-008bac5f9dba,Bianca
+Bianca,uses,Node.js,04b05a80-761a-42c4-8a48-008bac5f9dba,Bianca
+Bianca,uses,Python,04b05a80-761a-42c4-8a48-008bac5f9dba,Bianca
+Bianca,is looking for,DevOps Engineer role,04b05a80-761a-42c4-8a48-008bac5f9dba,Bianca
+we,are questioning readiness to deploy,Crowdstrike on dev,6bb2e952-5dc1-4906-9d41-a6d824fa9117,Alaadin
+Ansible,manages,groups,6bb2e952-5dc1-4906-9d41-a6d824fa9117,Alaadin
+you,used,CSS selectors,d3e7ea06-8eb4-4c3e-ad7c-332ee4e57159,General - SDET - February 2024
+you,used,XPath selectors,d3e7ea06-8eb4-4c3e-ad7c-332ee4e57159,General - SDET - February 2024
+you,used,sleep,d3e7ea06-8eb4-4c3e-ad7c-332ee4e57159,General - SDET - February 2024
+you,could inject,sensitive information into tests,d3e7ea06-8eb4-4c3e-ad7c-332ee4e57159,General - SDET - February 2024
+you,determine,which tests to automate,d3e7ea06-8eb4-4c3e-ad7c-332ee4e57159,General - SDET - February 2024
+you,handle,situation of not completing all tests before release date,d3e7ea06-8eb4-4c3e-ad7c-332ee4e57159,General - SDET - February 2024
+you,use,testing technique for deploying a crucial hotfix,d3e7ea06-8eb4-4c3e-ad7c-332ee4e57159,General - SDET - February 2024
+you,are familiar with,fuzz testing,d3e7ea06-8eb4-4c3e-ad7c-332ee4e57159,General - SDET - February 2024
+you,design,Automation framework for testing REST APIs,d3e7ea06-8eb4-4c3e-ad7c-332ee4e57159,General - SDET - February 2024
+sleep,can be replaced by,alternative methods,d3e7ea06-8eb4-4c3e-ad7c-332ee4e57159,General - SDET - February 2024
+POM,provides,advantages,d3e7ea06-8eb4-4c3e-ad7c-332ee4e57159,General - SDET - February 2024
+Software Development Engineer in Test (SDET),has,roles and responsibilities,d3e7ea06-8eb4-4c3e-ad7c-332ee4e57159,General - SDET - February 2024
+fuzz testing,detects,types of bugs,d3e7ea06-8eb4-4c3e-ad7c-332ee4e57159,General - SDET - February 2024
+white box testing,differs from,black box testing,d3e7ea06-8eb4-4c3e-ad7c-332ee4e57159,General - SDET - February 2024
+Ivan,got frustrated with,Vlad,f302ea9c-5774-4014-a682-be31f06c6f1f,"Vlad - SDET - February 14, 2024"
+Vlad,got frustrated with,some questions,f302ea9c-5774-4014-a682-be31f06c6f1f,"Vlad - SDET - February 14, 2024"
+Vlad,did not provide,clear answers,f302ea9c-5774-4014-a682-be31f06c6f1f,"Vlad - SDET - February 14, 2024"
+Vlad,would not be,a good cultural fit,f302ea9c-5774-4014-a682-be31f06c6f1f,"Vlad - SDET - February 14, 2024"
+Vlad,got frustrated with,Ivan,f302ea9c-5774-4014-a682-be31f06c6f1f,"Vlad - SDET - February 14, 2024"
+user,lists,aptly packages,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+user,creates,aptly user,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+aptly,requires,installation,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+aptly,creates,jammy-main mirror,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+aptly,creates,jammy-security mirror,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+aptly,creates,jammy-updates mirror,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+aptly,updates,jammy-main,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+aptly,updates,jammy-security,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+aptly,updates,jammy-updates,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+aptly,creates,focal-main mirror,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+aptly,creates,focal-security mirror,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+aptly,creates,focal-updates mirror,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+aptly,updates,focal-main,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+aptly,updates,focal-security,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+aptly,updates,focal-updates,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+instructions,provided at,https://www.aptly.info/download/,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+instructions,provided for,creating snapshot,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+gpg,generates,key,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+gpg,exports,keyring,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+gpg,imports,trustedkeys.gpg,7a85f4f5-8dee-416b-820b-617be622c784,Aptly
+Oscar,has been,out of the industry for a while,5ebf4601-76b1-4903-9c61-023e5bb85da1,Oscar
+Oscar,shows,signs of being out of the industry,5ebf4601-76b1-4903-9c61-023e5bb85da1,Oscar
+Oscar,could not imagine getting along with,Ivan,5ebf4601-76b1-4903-9c61-023e5bb85da1,Oscar
+Oscar,is,very long-winded in answers,5ebf4601-76b1-4903-9c61-023e5bb85da1,Oscar
+Oscar,is likely,nervous after being out of industry for so long,5ebf4601-76b1-4903-9c61-023e5bb85da1,Oscar
+I,had to add,a task,0f25eca8-623b-422d-83e6-9f4412877c75,NGINX Rate Limiting
+DevSec hardening role,added,limit_conn_zone $binary_remote_addr zone=default:10m;,0f25eca8-623b-422d-83e6-9f4412877c75,NGINX Rate Limiting
+DevSec hardening role,added,limit_conn default 5;,0f25eca8-623b-422d-83e6-9f4412877c75,NGINX Rate Limiting
+the task,runs after,the role,0f25eca8-623b-422d-83e6-9f4412877c75,NGINX Rate Limiting
+the task,uses,ansible.builtin.lineinfile,0f25eca8-623b-422d-83e6-9f4412877c75,NGINX Rate Limiting
+ansible.builtin.lineinfile,removes,limit_conn_zone $binary_remote_addr zone=default:10m;,0f25eca8-623b-422d-83e6-9f4412877c75,NGINX Rate Limiting
+ansible.builtin.lineinfile,removes,limit_conn default 5;,0f25eca8-623b-422d-83e6-9f4412877c75,NGINX Rate Limiting
+Liam,completed,assignment fantastically,98777ab3-7d98-4109-924f-65fbb3b88ddf,Liam - Job Offer
+members,felt,Liam would be a great fit,98777ab3-7d98-4109-924f-65fbb3b88ddf,Liam - Job Offer
+Liam's experience,aligns well,with the job requirements,98777ab3-7d98-4109-924f-65fbb3b88ddf,Liam - Job Offer
+company,values,mutual fit,98777ab3-7d98-4109-924f-65fbb3b88ddf,Liam - Job Offer
+PostgreSQL,should be moved to,separate state file,0501980b-3731-4e63-bd16-8e24046be92b,"User Hub Terraform - February 22, 2024"
+we,are considering,network changes,0501980b-3731-4e63-bd16-8e24046be92b,"User Hub Terraform - February 22, 2024"
+sandbox,is compared to,other environments,0501980b-3731-4e63-bd16-8e24046be92b,"User Hub Terraform - February 22, 2024"
+this,could be placed in,separate AWS account,0501980b-3731-4e63-bd16-8e24046be92b,"User Hub Terraform - February 22, 2024"
+Joe,wrote,Collaboration API,9dfd958b-634f-41a6-97c2-274e90f88163,"Joe - February 23, 2024"
+Fortigate,is available on,AWS Marketplace,0332166e-11fa-4677-8531-9dabee5d3495,AWS Firewall - Marketplace
+Fortigate,costs,$0.383/hr for t2.small,0332166e-11fa-4677-8531-9dabee5d3495,AWS Firewall - Marketplace
+Sophos UTM9,is available on,AWS Marketplace,0332166e-11fa-4677-8531-9dabee5d3495,AWS Firewall - Marketplace
+Sophos UTM9,costs,$0.123/hr for t2.small,0332166e-11fa-4677-8531-9dabee5d3495,AWS Firewall - Marketplace
+Sophos Cloud Firewall,is available on,AWS Marketplace,0332166e-11fa-4677-8531-9dabee5d3495,AWS Firewall - Marketplace
+Sophos Cloud Firewall,costs,$0.462/hr for t3.medium,0332166e-11fa-4677-8531-9dabee5d3495,AWS Firewall - Marketplace
+OPNsense,is available on,AWS Marketplace,0332166e-11fa-4677-8531-9dabee5d3495,AWS Firewall - Marketplace
+OPNsense,costs,$0.063/hr for t2.small,0332166e-11fa-4677-8531-9dabee5d3495,AWS Firewall - Marketplace
+opnsense,requires,two network interfaces,119d6aa2-edec-4e62-b0a3-3acb81b94860,"opnsense - February, 2024"
+instance,will not work,without two network interfaces,119d6aa2-edec-4e62-b0a3-3acb81b94860,"opnsense - February, 2024"
+web UI,will not work,without two network interfaces,119d6aa2-edec-4e62-b0a3-3acb81b94860,"opnsense - February, 2024"
+user,restarts,openvpn service,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+user,adds,route 10.0.0.0 255.0.0.0,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+user,adds,route-nopull,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+user,comments out,redirect-gateway def1 bypass-dhcp,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+user,edits,/etc/openvpn/server.conf,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+user,sets hostname,openvpn,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+user,modifies,server configuration file,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+user,adds,configuration to /etc/openvpn/server.conf,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+user,accesses,https://github.com/angristan/openvpn-install/,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+sudo,restarts,openvpn service,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+push,configures,redirect-gateway def1,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+push,configures,dhcp-option DNS 169.254.169.253,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+push,configures,dhcp-option DNS 10.200.0.2,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+push,configures,route-nopull,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+push,configures,route 10.0.0.0 255.0.0.0,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,uses,port 1194,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,uses,proto udp,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,uses,dev tun,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,runs as,user nobody,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,runs as,group nogroup,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,persists,key,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,persists,tun,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,keeps alive,connection with keepalive 10 120,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,uses,topology subnet,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,serves,10.8.0.0 255.255.255.0,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,persists,ipp.txt,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,uses,tls-crypt key,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,verifies,crl.pem,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,uses,ca.crt,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,uses,server_hxiiTfrY86WSpI27.crt,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,uses,server_hxiiTfrY86WSpI27.key,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,authenticates with,SHA256,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,encrypts with,AES-128-GCM,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,uses,TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,stores,client configurations in /etc/openvpn/ccd,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,logs status to,/var/log/openvpn/status.log,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+server,requires,IP forwarding,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+openvpn,uses,port 943,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+openvpn,runs on,aws,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+openvpn,runs on,DO,0aa18733-83d1-42a7-8dca-b78d1825e973,OpenVPN
+user,decides,accessibility of private subnets to clients,9063ea55-9dfb-476b-99b2-50c68c3f9371,OpenVPN Access Server
+user,decides,default routing of client DNS traffic through the VPN,9063ea55-9dfb-476b-99b2-50c68c3f9371,OpenVPN Access Server
+user,decides,default routing of client traffic through the VPN,9063ea55-9dfb-476b-99b2-50c68c3f9371,OpenVPN Access Server
+user,specifies,TCP port number for OpenVPN Daemon,9063ea55-9dfb-476b-99b2-50c68c3f9371,OpenVPN Access Server
+user,chooses,different user account for login,9063ea55-9dfb-476b-99b2-50c68c3f9371,OpenVPN Access Server
+user,can login as,openvpn,9063ea55-9dfb-476b-99b2-50c68c3f9371,OpenVPN Access Server
+user,authenticates with,host UNIX system,9063ea55-9dfb-476b-99b2-50c68c3f9371,OpenVPN Access Server
+user,specifies,port number for Admin Web UI,9063ea55-9dfb-476b-99b2-50c68c3f9371,OpenVPN Access Server
+user,chooses,public/private type/algorithms for self-signed web certificate,9063ea55-9dfb-476b-99b2-50c68c3f9371,OpenVPN Access Server
+user,chooses,public/private type/algorithms for OpenVPN CA,9063ea55-9dfb-476b-99b2-50c68c3f9371,OpenVPN Access Server
+user,specifies,network interface and IP address,9063ea55-9dfb-476b-99b2-50c68c3f9371,OpenVPN Access Server
+user,provides,configuration settings,9063ea55-9dfb-476b-99b2-50c68c3f9371,OpenVPN Access Server
+user,configures,primary Access Server node,9063ea55-9dfb-476b-99b2-50c68c3f9371,OpenVPN Access Server
+OpenVPN Access Server,can be configured by,Admin Web UI,9063ea55-9dfb-476b-99b2-50c68c3f9371,OpenVPN Access Server
+Admin Web UI,accessed using,Web browser,9063ea55-9dfb-476b-99b2-50c68c3f9371,OpenVPN Access Server
+queries,failed to upgrade,legacy queries,751e2a3b-6028-4ea7-a9cf-12d94d587976,"Grafana - ""Failed to upgrade legacy queries”"
+casing,needs to be,proper on regex queries,751e2a3b-6028-4ea7-a9cf-12d94d587976,"Grafana - ""Failed to upgrade legacy queries”"
+.*user-hub.*,did not work,as intended,751e2a3b-6028-4ea7-a9cf-12d94d587976,"Grafana - ""Failed to upgrade legacy queries”"
+.*User-Hub.*,worked,correctly,751e2a3b-6028-4ea7-a9cf-12d94d587976,"Grafana - ""Failed to upgrade legacy queries”"
+Nordlayer,offers,594.00/month for 54 users,03bf3dc0-9d61-4b2d-a343-59a8bea10f69,Nordlayer
+Nordlayer,offers,100/month for 2 servers,03bf3dc0-9d61-4b2d-a343-59a8bea10f69,Nordlayer
+594.00/month for 54 users,equals,11/user/month,03bf3dc0-9d61-4b2d-a343-59a8bea10f69,Nordlayer
+sudo,executes,sshfs,ceac9bd9-8b48-40ec-8aa2-a327f65264b0,SSHFS
+sshfs,mounts,fileshare@10.132.250.58:/mnt/shared,ceac9bd9-8b48-40ec-8aa2-a327f65264b0,SSHFS
+sshfs,mounts,/mnt/shared,ceac9bd9-8b48-40ec-8aa2-a327f65264b0,SSHFS
+sshfs,uses,allow_other,ceac9bd9-8b48-40ec-8aa2-a327f65264b0,SSHFS
+sshfs,uses,default_permissions,ceac9bd9-8b48-40ec-8aa2-a327f65264b0,SSHFS
+sshfs,uses,identityfile=/home/tim/id_fs,ceac9bd9-8b48-40ec-8aa2-a327f65264b0,SSHFS
+sshfs,uses,identityfile=/home/bucketlist/.ssh/id_fileshare,ceac9bd9-8b48-40ec-8aa2-a327f65264b0,SSHFS
+sshfs,uses,reconnect,ceac9bd9-8b48-40ec-8aa2-a327f65264b0,SSHFS
+sshfs,uses,_netdev,ceac9bd9-8b48-40ec-8aa2-a327f65264b0,SSHFS
+sshfs,uses,transform_symlinks,ceac9bd9-8b48-40ec-8aa2-a327f65264b0,SSHFS
+sshfs,uses,idmap=user,ceac9bd9-8b48-40ec-8aa2-a327f65264b0,SSHFS
+sshfs,uses,BatchMode=yes,ceac9bd9-8b48-40ec-8aa2-a327f65264b0,SSHFS
+fileshare@10.132.250.58:/mnt/shared,is mounted to,/mnt/shared,ceac9bd9-8b48-40ec-8aa2-a327f65264b0,SSHFS
+fileshare@10.108.0.26:/mnt/shared,is mounted to,/mnt/shared,ceac9bd9-8b48-40ec-8aa2-a327f65264b0,SSHFS
+user,re-created,task definition,58cb0851-faa2-4bee-b677-62b702648fc4,Private DNS for ECR not working in ECS
+user,re-created,service,58cb0851-faa2-4bee-b677-62b702648fc4,Private DNS for ECR not working in ECS
+user,re-created,cluster,58cb0851-faa2-4bee-b677-62b702648fc4,Private DNS for ECR not working in ECS
+service,was deleted by,user,58cb0851-faa2-4bee-b677-62b702648fc4,Private DNS for ECR not working in ECS
+cluster,was deleted by,user,58cb0851-faa2-4bee-b677-62b702648fc4,Private DNS for ECR not working in ECS
+task definition,was deleted by,user,58cb0851-faa2-4bee-b677-62b702648fc4,Private DNS for ECR not working in ECS
+re-creation,resolved,issue,58cb0851-faa2-4bee-b677-62b702648fc4,Private DNS for ECR not working in ECS
+SSH_AUTH_SOCK,set to,path to 1Password agent socket,36b8afab-f3fd-4b28-a9c9-653601042b7e,SSH Key Shenanigans
+1Password,configures,SSH agent,36b8afab-f3fd-4b28-a9c9-653601042b7e,SSH Key Shenanigans
+agent.toml,contains,SSH key configurations,36b8afab-f3fd-4b28-a9c9-653601042b7e,SSH Key Shenanigans
+SSH key configurations,include,vault settings,36b8afab-f3fd-4b28-a9c9-653601042b7e,SSH Key Shenanigans
+vault settings,define,access levels,36b8afab-f3fd-4b28-a9c9-653601042b7e,SSH Key Shenanigans
+access levels,include,Private,36b8afab-f3fd-4b28-a9c9-653601042b7e,SSH Key Shenanigans
+access levels,include,System Admin / Devops,36b8afab-f3fd-4b28-a9c9-653601042b7e,SSH Key Shenanigans
+user,installs,opentelemetry-instrumentation-celery,afb03202-8372-4458-ae52-47eaa7b5ec09,Hackathon
+user,installs,opentelemetry-instrumentation-django,afb03202-8372-4458-ae52-47eaa7b5ec09,Hackathon
+user,installs,opentelemetry-exporter-otlp,afb03202-8372-4458-ae52-47eaa7b5ec09,Hackathon
+user,installs,opentelemetry-sdk,afb03202-8372-4458-ae52-47eaa7b5ec09,Hackathon
+user,installs,opentelemetry-api,afb03202-8372-4458-ae52-47eaa7b5ec09,Hackathon
+user,activates,virtual environment,afb03202-8372-4458-ae52-47eaa7b5ec09,Hackathon
+user,navigates to,/home/bucketlist/blcorp-virtual-env-38,afb03202-8372-4458-ae52-47eaa7b5ec09,Hackathon
+http://tempo-query-frontend.tempo.svc.cluster.local:3100,is accessed by,user,afb03202-8372-4458-ae52-47eaa7b5ec09,Hackathon
+https://collector.bucketlist.org/v1/traces,is accessed by,user,afb03202-8372-4458-ae52-47eaa7b5ec09,Hackathon
+Check remote agent,uses,/usr/bin/check_nrpe,72cc671d-1a91-4d5d-a846-cfeb968e143e,Nagios
+/usr/bin/check_nrpe,connects to,10.132.250.52,72cc671d-1a91-4d5d-a846-cfeb968e143e,Nagios
+/usr/bin/check_nrpe,executes,check_users,72cc671d-1a91-4d5d-a846-cfeb968e143e,Nagios
+/usr/bin/check_nrpe,connects to,10.118.0.15,72cc671d-1a91-4d5d-a846-cfeb968e143e,Nagios
+/usr/bin/check_nrpe,executes,check_celery,72cc671d-1a91-4d5d-a846-cfeb968e143e,Nagios
+API key,is created in,/home/opsgenie/oec/conf/opsgenie-integration.conf,72cc671d-1a91-4d5d-a846-cfeb968e143e,Nagios
+Deployment,went well,last night,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+OS updates,completed,tonight,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+AWS,used,for tasks,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+Updated,file,.env file in 1Password for develop,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+Ran,tests,smoke tests,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+Install,software,Falcon,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+Remaining,require,database upgrades require scheduling,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+Completed,task,add EC2 backups to Terraform,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+Completed,support ticket for,Monique access,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+Need,start working on,assignment for DevOps candidates,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+DB upgrade,had,problems,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+Adding,pipeline to,js-bot directory to package artifact,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+Work on,filling,open DevOps position,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+Database upgrade,attempt,tomorrow,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+Automated tests,were run,through the pipeline,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+Bitbucket pipeline,is complete,Need to create a PR,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+Bitbucket pipeline,for running,Ansible,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+Begin,validation,"go through logs, etc",c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+Reviewed,document,SDLC,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+Wait for,tests,automated unit tests,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+Review,document,SDLC,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+S3 bucket,for archiving,built artifact,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+Environment,rebuild,occurred,c0e35d3d-a028-4447-b693-62aeda8d273b,Stand-Up
+deployment,had,issues,612a4a74-92c2-4091-8ee4-a8470bba1a9a,"Deployment Debrief - April 25, 2024"
+deployment,had,problem,612a4a74-92c2-4091-8ee4-a8470bba1a9a,"Deployment Debrief - April 25, 2024"
+deployment,was worked around,somehow,612a4a74-92c2-4091-8ee4-a8470bba1a9a,"Deployment Debrief - April 25, 2024"
+CA,was,rebuilt environment,612a4a74-92c2-4091-8ee4-a8470bba1a9a,"Deployment Debrief - April 25, 2024"
+US,was,old-school manual,612a4a74-92c2-4091-8ee4-a8470bba1a9a,"Deployment Debrief - April 25, 2024"
+Terraform,differs from,Ansible,20a2b8f8-f4b9-4c53-98f4-0066203fa141,"Ansible Training - May 22, 2024"
+Ansible,is,flexible,20a2b8f8-f4b9-4c53-98f4-0066203fa141,"Ansible Training - May 22, 2024"
+Ansible,is,complex,20a2b8f8-f4b9-4c53-98f4-0066203fa141,"Ansible Training - May 22, 2024"
+training material,covers,features of Ansible,20a2b8f8-f4b9-4c53-98f4-0066203fa141,"Ansible Training - May 22, 2024"
+NGINX,executes,ansible-playbook nginx/tests/test.yml -i ../inventories/demo/remote.ini -e ansible_user=tim --limit=webserver:mailhog:flower:bot,e58487e1-03d2-4a05-b861-f901d7431405,Environment Sync
+NGINX,stops after,nginx : Copy nginx.conf,e58487e1-03d2-4a05-b861-f901d7431405,Environment Sync
+NGINX,requires,server restart,e58487e1-03d2-4a05-b861-f901d7431405,Environment Sync
+JS Bot,requires,server restart,e58487e1-03d2-4a05-b861-f901d7431405,Environment Sync
+JS Bot,ensures,pm2 status shows nothing running,e58487e1-03d2-4a05-b861-f901d7431405,Environment Sync
+JS Bot,executes,"ansible-playbook ../playbooks/bl-app/2.pre-reqs.yml -i ../inventories/demo/remote.ini -e ansible_user=tim -e build_artifact=/tmp/js-bot-30.tar.gz --start-at-task=""Create js_bot log directory""",e58487e1-03d2-4a05-b861-f901d7431405,Environment Sync
+JS Bot,stops after,Enable js_bot service runs,e58487e1-03d2-4a05-b861-f901d7431405,Environment Sync
+JS Bot,accesses,http://localhost:3978/api/messages,e58487e1-03d2-4a05-b861-f901d7431405,Environment Sync
+Monitoring,executes,ansible-playbook ../playbooks/bl-app/helpers/monitoring.yml -i ../inventories/demo/remote.ini -e ansible_user=tim,e58487e1-03d2-4a05-b861-f901d7431405,Environment Sync
+logs,belong to,nginx,b5f750a1-81b9-4d18-8f0d-1320435f1d22,NGINX Logs
+avg_over_time,calculates,average request time,b5f750a1-81b9-4d18-8f0d-1320435f1d22,NGINX Logs
+request_time,measured in,seconds,b5f750a1-81b9-4d18-8f0d-1320435f1d22,NGINX Logs
+request_time,greater than,5 seconds,b5f750a1-81b9-4d18-8f0d-1320435f1d22,NGINX Logs
+path,filtered by,method,b5f750a1-81b9-4d18-8f0d-1320435f1d22,NGINX Logs
+job,identified as,nginx,b5f750a1-81b9-4d18-8f0d-1320435f1d22,NGINX Logs
+host,selected as,$selected_host,b5f750a1-81b9-4d18-8f0d-1320435f1d22,NGINX Logs
+CA,scheduled for,October 12,10cd6cfe-c999-8017-b693-f30325c0e4f0,Production Timeline
+US,scheduled for,October 19 or October 26,10cd6cfe-c999-8017-b693-f30325c0e4f0,Production Timeline
+Paul,created,tentative schedule,10cd6cfe-c999-8017-b693-f30325c0e4f0,Production Timeline
+tentative schedule,includes,Django Upgrade deployment,10cd6cfe-c999-8017-b693-f30325c0e4f0,Production Timeline
+Django Upgrade deployment,scheduled for,September 25,10cd6cfe-c999-8017-b693-f30325c0e4f0,Production Timeline
+CA or Demo AWS Migration,scheduled for,window between September 28 and October 6,10cd6cfe-c999-8017-b693-f30325c0e4f0,Production Timeline
+Normal Deploy,scheduled for,October 9,10cd6cfe-c999-8017-b693-f30325c0e4f0,Production Timeline
+CHS Migration on DO,scheduled for,window between September 26 and October 17,10cd6cfe-c999-8017-b693-f30325c0e4f0,Production Timeline
+US AWS Migration,scheduled for,October 19,10cd6cfe-c999-8017-b693-f30325c0e4f0,Production Timeline
+CHS Migration,planned for,October 2/3,10cd6cfe-c999-8017-b693-f30325c0e4f0,Production Timeline
+Demo,scheduled for,October 15 or 16,10cd6cfe-c999-8017-b693-f30325c0e4f0,Production Timeline
+Redis,tracks,number of active tasks,135d6cfe-c999-809e-9cc4-f468e6fa6b99,Containerization
+kubectl,get secret,argo-cd-initial-admin-secret,137d6cfe-c999-8063-b03c-ed5b3a396913,EKS Build Log
+kubectl,change namespace,k6,137d6cfe-c999-8063-b03c-ed5b3a396913,EKS Build Log
+kubectl,create configmap,demo,137d6cfe-c999-8063-b03c-ed5b3a396913,EKS Build Log
+helm,dependency update,./argo-cd/chart,137d6cfe-c999-8063-b03c-ed5b3a396913,EKS Build Log
+helm,upgrade --install,argo-cd,137d6cfe-c999-8063-b03c-ed5b3a396913,EKS Build Log
+helm,upgrade --install,k6,137d6cfe-c999-8063-b03c-ed5b3a396913,EKS Build Log
+curl command,requests,authentication token,129d6cfe-c999-808f-919d-de6a8d8ab446,MS Teams Bot
+curl command,validates,endpoint,129d6cfe-c999-808f-919d-de6a8d8ab446,MS Teams Bot
+authentication token,is obtained from,https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token,129d6cfe-c999-808f-919d-de6a8d8ab446,MS Teams Bot
+MicrosoftAppId,is replaced from,/home/bucketlist/blcorp-js-bot/.env,129d6cfe-c999-808f-919d-de6a8d8ab446,MS Teams Bot
+MicrosoftAppPassword,is replaced from,/home/bucketlist/blcorp-js-bot/.env,129d6cfe-c999-808f-919d-de6a8d8ab446,MS Teams Bot
+endpoint,returns,status code 200,129d6cfe-c999-808f-919d-de6a8d8ab446,MS Teams Bot
+Authorization header,uses,Bearer TOKEN,129d6cfe-c999-808f-919d-de6a8d8ab446,MS Teams Bot
+TOKEN,is replaced with,access_token from previous step,129d6cfe-c999-808f-919d-de6a8d8ab446,MS Teams Bot
+Terraform,was run on,each account,5d5f519d-655a-4f17-a3b1-51c80e19bf0e,AWS
+admin@bucketlist.org,is part of,Old Account,5d5f519d-655a-4f17-a3b1-51c80e19bf0e,AWS
+admin2@bucketlistrewards.com,is part of,New Account,5d5f519d-655a-4f17-a3b1-51c80e19bf0e,AWS
+bamba@bucketlistrewards.com,is part of,New Account,5d5f519d-655a-4f17-a3b1-51c80e19bf0e,AWS
+john@bucketlistrewards.com,is part of,New Account,5d5f519d-655a-4f17-a3b1-51c80e19bf0e,AWS
+Workloads+fooA+dev@domain.com,reflects,WorkloadsFooADev,5d5f519d-655a-4f17-a3b1-51c80e19bf0e,AWS
+Workloads+fooB+dev@domain.com,reflects,WorkloadsFooBDev,5d5f519d-655a-4f17-a3b1-51c80e19bf0e,AWS
+https://docs.aws.amazon.com/organizations/latest/userguide/best-practices_member-acct.html,provides,guidelines for naming member accounts,5d5f519d-655a-4f17-a3b1-51c80e19bf0e,AWS
+aws configure list-profiles,lists,available AWS profiles,5d5f519d-655a-4f17-a3b1-51c80e19bf0e,AWS
+export AWS_PROFILE=management,sets,AWS_PROFILE to management,5d5f519d-655a-4f17-a3b1-51c80e19bf0e,AWS
+GrantAccessToOrganizationAccountAccessRole,was created in,management,5d5f519d-655a-4f17-a3b1-51c80e19bf0e,AWS
+GrantAccessToOrganizationAccountAccessRole,grants access to,devops-prod,5d5f519d-655a-4f17-a3b1-51c80e19bf0e,AWS
+GrantAccessToOrganizationAccountAccessRole,grants access to,network-prod,5d5f519d-655a-4f17-a3b1-51c80e19bf0e,AWS
+https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html,provides,information on managing account access,5d5f519d-655a-4f17-a3b1-51c80e19bf0e,AWS
+default VPC,was deleted from,each account,5d5f519d-655a-4f17-a3b1-51c80e19bf0e,AWS
+new route table,was set as,main route table,5d5f519d-655a-4f17-a3b1-51c80e19bf0e,AWS
+old route table,was deleted from,each account,5d5f519d-655a-4f17-a3b1-51c80e19bf0e,AWS
+ssh-keygen,generates,SSH key,6a5fc976-8f27-414e-a50d-737c5d10e7bd,DevOps-EKS
+kubeseal,seals,secrets,6a5fc976-8f27-414e-a50d-737c5d10e7bd,DevOps-EKS
+AWS_PROFILE,set to,devops-prod,6a5fc976-8f27-414e-a50d-737c5d10e7bd,DevOps-EKS
+aws eks update-kubeconfig,updates,kubeconfig,6a5fc976-8f27-414e-a50d-737c5d10e7bd,DevOps-EKS
+terraform import,imports,aws_eks_access_policy_association.cluster_admin,6a5fc976-8f27-414e-a50d-737c5d10e7bd,DevOps-EKS
+flux bootstrap git,bootstraps,git repository,6a5fc976-8f27-414e-a50d-737c5d10e7bd,DevOps-EKS
+eksctl utils associate-iam-oidc-provider,associates,IAM OIDC provider,6a5fc976-8f27-414e-a50d-737c5d10e7bd,DevOps-EKS
+eksctl create iamserviceaccount,creates,IAM service account,6a5fc976-8f27-414e-a50d-737c5d10e7bd,DevOps-EKS
+eksctl get iamserviceaccount,gets,IAM service account,6a5fc976-8f27-414e-a50d-737c5d10e7bd,DevOps-EKS
+flux suspend hr,suspends,helm release,6a5fc976-8f27-414e-a50d-737c5d10e7bd,DevOps-EKS
+flux resume hr,resumes,helm release,6a5fc976-8f27-414e-a50d-737c5d10e7bd,DevOps-EKS
+kubectl create secret generic,creates,generic secret,6a5fc976-8f27-414e-a50d-737c5d10e7bd,DevOps-EKS
+aws eks describe-cluster,describes,cluster,6a5fc976-8f27-414e-a50d-737c5d10e7bd,DevOps-EKS
+ecs:RegisterTaskDefinition,is allowed for,arn:aws:ecs:us-east-1:140782355245:task-definition/ms-teams-qa-task-definition:,146d6cfe-c999-808e-9e3e-d39baf611e33,AWS Permissions v3
+ecs:RegisterTaskDefinition,is allowed for,arn:aws:ecs:us-east-1:339713030677:task-definition/user-hub-qa-api-task-definition:,146d6cfe-c999-808e-9e3e-d39baf611e33,AWS Permissions v3
+ecs:TagResource,is allowed for,arn:aws:ecs:us-east-1:140782355245:task-definition/ms-teams-qa-task-definition:,146d6cfe-c999-808e-9e3e-d39baf611e33,AWS Permissions v3
+ecs:TagResource,is allowed for,arn:aws:ecs:us-east-1:339713030677:task-definition/user-hub-qa-api-task-definition:,146d6cfe-c999-808e-9e3e-d39baf611e33,AWS Permissions v3
+iam:PassRole,is allowed for,arn:aws:iam::140782355245:role/BucketlistEcsTaskRole,146d6cfe-c999-808e-9e3e-d39baf611e33,AWS Permissions v3
+iam:PassRole,is allowed for,arn:aws:iam::140782355245:role/BucketlistEcsTaskAccessRole,146d6cfe-c999-808e-9e3e-d39baf611e33,AWS Permissions v3
+iam:PassRole,is allowed for,arn:aws:iam::339713030677:role/BucketlistEcsTaskRole,146d6cfe-c999-808e-9e3e-d39baf611e33,AWS Permissions v3
+iam:PassRole,is allowed for,arn:aws:iam::339713030677:role/BucketlistEcsAPI,146d6cfe-c999-808e-9e3e-d39baf611e33,AWS Permissions v3
+ecs:ListTasks,is allowed for,*,146d6cfe-c999-808e-9e3e-d39baf611e33,AWS Permissions v3
+ecs:UpdateService,is allowed for,arn:aws:ecs:us-east-1:140782355245:service/ms-teams-qa-cluster/ms-teams-qa-service,146d6cfe-c999-808e-9e3e-d39baf611e33,AWS Permissions v3
+ecs:UpdateService,is allowed for,arn:aws:ecs:us-east-1:339713030677:service/user-hub-qa-api-cluster/user-hub-qa-api-service,146d6cfe-c999-808e-9e3e-d39baf611e33,AWS Permissions v3
+user,calls,distribute_points_to_give.apply with integer and list arguments,150d6cfe-c999-80d4-ae1e-d1bf1248702c,Start Celery Tasks
+user,calls,distribute_points_to_give.apply with datetime argument,150d6cfe-c999-80d4-ae1e-d1bf1248702c,Start Celery Tasks
+user,imports,datetime,150d6cfe-c999-80d4-ae1e-d1bf1248702c,Start Celery Tasks
+user,imports,distribute_points_to_give from company.tasks,150d6cfe-c999-80d4-ae1e-d1bf1248702c,Start Celery Tasks
+user,imports,Company from company.models,150d6cfe-c999-80d4-ae1e-d1bf1248702c,Start Celery Tasks
+user,executes,python3 manage.py shell,150d6cfe-c999-80d4-ae1e-d1bf1248702c,Start Celery Tasks
+user,queries,Company with id 24,150d6cfe-c999-80d4-ae1e-d1bf1248702c,Start Celery Tasks
+user,prints,result,150d6cfe-c999-80d4-ae1e-d1bf1248702c,Start Celery Tasks
+user,switches to,bucketlist,150d6cfe-c999-80d4-ae1e-d1bf1248702c,Start Celery Tasks
+user,activates,virtualenvs/blcorp,150d6cfe-c999-80d4-ae1e-d1bf1248702c,Start Celery Tasks
+user,navigates to,blcorp-website/src,150d6cfe-c999-80d4-ae1e-d1bf1248702c,Start Celery Tasks
+Marc,asks about,/home/bucketlist/blcorp/src/media/upload,95e98a65-0074-4f97-8721-6849916e0fd8,Marc
+Marc,questions the need for,/home/bucketlist/certs,95e98a65-0074-4f97-8721-6849916e0fd8,Marc
+Marc,wants to know how to handle,saml certificates,95e98a65-0074-4f97-8721-6849916e0fd8,Marc
+Marc,wants to know how to test,Mailhog,95e98a65-0074-4f97-8721-6849916e0fd8,Marc
+Marc,questions why,collectstatic is not working,95e98a65-0074-4f97-8721-6849916e0fd8,Marc
+Marc,considers deleting,directory before running collectstatic,95e98a65-0074-4f97-8721-6849916e0fd8,Marc
+/home/bucketlist/certs,are on,dev,95e98a65-0074-4f97-8721-6849916e0fd8,Marc
+/home/bucketlist/blcorp/src/media/upload,are not in,S3,95e98a65-0074-4f97-8721-6849916e0fd8,Marc
+saml certificates,are located at,/mnt/blcorp_live_webserver_nyc3_volume/saml2-certificates/vectorized/vectorized-saml2-key.pem,95e98a65-0074-4f97-8721-6849916e0fd8,Marc
+saml certificates,are referenced in,local_settings.py,95e98a65-0074-4f97-8721-6849916e0fd8,Marc
+user,is set to,CompanyUser.objects.get(email='admin@bucketlist.org'),cd0f5af3-3709-4905-a97d-08b1220082fb,Troubleshooting
+./manage.py shell,attempts,create superuser,cd0f5af3-3709-4905-a97d-08b1220082fb,Troubleshooting
+Create new user,requires,source ~/virtualenvs/blcorp/bin/activate,cd0f5af3-3709-4905-a97d-08b1220082fb,Troubleshooting
+source ~/virtualenvs/blcorp/bin/activate,enables,./manage.py shell,cd0f5af3-3709-4905-a97d-08b1220082fb,Troubleshooting
+CompanyUser,lacks,email_address field,cd0f5af3-3709-4905-a97d-08b1220082fb,Troubleshooting
+resetting password,involves,from company.user.models import *,cd0f5af3-3709-4905-a97d-08b1220082fb,Troubleshooting
+user.set_password('abc'),changes,user password,cd0f5af3-3709-4905-a97d-08b1220082fb,Troubleshooting
+user.save(),saves,user changes,cd0f5af3-3709-4905-a97d-08b1220082fb,Troubleshooting
+AWS NLB load balancer,experiences,health check failure,cd0f5af3-3709-4905-a97d-08b1220082fb,Troubleshooting
+ssh-keygen,generates,SSH key,fcddc9d3-0021-4dca-9c76-cf7655e71834,Linux
+journalctl,displays,celery logs,fcddc9d3-0021-4dca-9c76-cf7655e71834,Linux
+journalctl,displays,promtail.service logs,fcddc9d3-0021-4dca-9c76-cf7655e71834,Linux
+mssh,connects to,EC2 instance,fcddc9d3-0021-4dca-9c76-cf7655e71834,Linux
+ncdu,shows,disk space usage,fcddc9d3-0021-4dca-9c76-cf7655e71834,Linux
+namei,diagnoses,permission issues,fcddc9d3-0021-4dca-9c76-cf7655e71834,Linux
+user,runs,docker-compose up,66a411e7-cb1d-4096-b526-d57052682774,Docker Compose
+user,restarts,<container_name>,66a411e7-cb1d-4096-b526-d57052682774,Docker Compose
+user,views,logs,66a411e7-cb1d-4096-b526-d57052682774,Docker Compose
+user,runs,docker-compose up -d,66a411e7-cb1d-4096-b526-d57052682774,Docker Compose
+user,runs,docker-compose up -d loki,66a411e7-cb1d-4096-b526-d57052682774,Docker Compose
+user,dumps,config,66a411e7-cb1d-4096-b526-d57052682774,Docker Compose
+user,dumps,running config,66a411e7-cb1d-4096-b526-d57052682774,Docker Compose
+user,runs,nginx -T,66a411e7-cb1d-4096-b526-d57052682774,Docker Compose
+logs,tail,100,66a411e7-cb1d-4096-b526-d57052682774,Docker Compose
+logs,from,loki,66a411e7-cb1d-4096-b526-d57052682774,Docker Compose
+pods,updated from,docker-compose.yml,66a411e7-cb1d-4096-b526-d57052682774,Docker Compose
+containers,run in,background,66a411e7-cb1d-4096-b526-d57052682774,Docker Compose
+config,shows,vars,66a411e7-cb1d-4096-b526-d57052682774,Docker Compose
+vars,coming from,.env,66a411e7-cb1d-4096-b526-d57052682774,Docker Compose
+nginx,monitors,specific-endpoint status,d1cd13ce-b37a-40cf-99b8-86710e0c3db1,Code Dump
+S3,defines,temp upload policy,d1cd13ce-b37a-40cf-99b8-86710e0c3db1,Code Dump
+brew,installs,python@3.10,d1cd13ce-b37a-40cf-99b8-86710e0c3db1,Code Dump
+aws,executes,sso login,d1cd13ce-b37a-40cf-99b8-86710e0c3db1,Code Dump
+aws,executes,ecr get-login-password,d1cd13ce-b37a-40cf-99b8-86710e0c3db1,Code Dump
+renovate,uses,bitbucket,d1cd13ce-b37a-40cf-99b8-86710e0c3db1,Code Dump
+renovate,executes,dry-run,d1cd13ce-b37a-40cf-99b8-86710e0c3db1,Code Dump
+docker,executes,login,d1cd13ce-b37a-40cf-99b8-86710e0c3db1,Code Dump
+docker,builds,blcorp-user-hub-api:test-1,d1cd13ce-b37a-40cf-99b8-86710e0c3db1,Code Dump
+docker,builds,blcorp-user-hub-k8s-job-spawner:test-1,d1cd13ce-b37a-40cf-99b8-86710e0c3db1,Code Dump
+docker,builds,blcorp-user-hub-merge-sync:test-1,d1cd13ce-b37a-40cf-99b8-86710e0c3db1,Code Dump
+policy,allows,public read,d1cd13ce-b37a-40cf-99b8-86710e0c3db1,Code Dump
+policy,allows,temp user upload,d1cd13ce-b37a-40cf-99b8-86710e0c3db1,Code Dump
+python3,creates,virtualenv,d1cd13ce-b37a-40cf-99b8-86710e0c3db1,Code Dump
+TODO list,includes,Update Cloudflare IP in .env,63dbc43b-4a7c-4b64-a4bb-8d9561e18808,CA Build
+TODO list,includes,Certs in /home/bucketlist/certs,63dbc43b-4a7c-4b64-a4bb-8d9561e18808,CA Build
+Certs,located in,/home/bucketlist/certs,63dbc43b-4a7c-4b64-a4bb-8d9561e18808,CA Build
+Celery Exporter,is not installed on,QA,11dd6cfe-c999-8053-9157-f7015f9926ec,"State of Monitoring - Oct 12, 2024"
+Celery Exporter,is not installed on,Staging,11dd6cfe-c999-8053-9157-f7015f9926ec,"State of Monitoring - Oct 12, 2024"
+Celery Exporter,is not installed on,CA Prod,11dd6cfe-c999-8053-9157-f7015f9926ec,"State of Monitoring - Oct 12, 2024"
+NGINX Exporter,is not working on,Flower servers,11dd6cfe-c999-8053-9157-f7015f9926ec,"State of Monitoring - Oct 12, 2024"
+user,was created,doadmin,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+user,was created,bucketlist_staging,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+user,was created,bucketlist_ci,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+user,was created,bucketlist_dev,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+Terraform,requires start,for dev environment,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+Deployment,requires opening,https://manage.statuspage.io/,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+psql,requires,connection string,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+postgres,is the schema owner,but not accessible in DO,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+CREATE EXTENSION,was executed for,postgis,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+redis-cli,requires command,flushall,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+2.0.3 release build,is intended to be,deployed to demo,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+Image,was stored in,source control,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+Image,was not stored in,S3,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+L3 hours,were set,for the task,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+task,was assigned back to,the creator,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+release notes,contain,special instructions,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+pgdump,was running,during deployment,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+pgdump,caused,migration to fail,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+ansible-galaxy,installed,community.general,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+ansible-galaxy,installed,community.digitalocean,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+ansible-galaxy,installed,community.postgresql,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+ansible-galaxy,installed,ansible.posix,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+jenkins,requires,pipeline utility plugin,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+database,requires upgrade options,DO,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+PR,requires review,about celery log files,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+test automation document,requires modification,to become an RFC,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+Jenkins job,requires creation,to deploy to dev,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+build artifact,requires upload,to S3,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+alerts,require review,and creation of runbooks,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+DevOps grooming,requires addition,to the calendar,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+ADP section,exists in,django admin,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+customers in Canada,require manual enabling,ADP,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+keys,require sharing,for ADP,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+emails,were not coming through,on QA,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+mailhog,requires status check,via systemctl,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+celery-worker.log,requires tailing,for logs,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+each Celery server,has a specific use,to be determined,53fd4265-7fd4-4888-9070-4e29e2df6af4,Notes
+Admin URL,is entered,first time visiting the site,177d6cfe-c999-8061-a0d5-cb7a4b21f4c7,"MS Teams (with Jody) - Jan 10, 2025"
+Admin page,is not shown,subsequent visits,177d6cfe-c999-8061-a0d5-cb7a4b21f4c7,"MS Teams (with Jody) - Jan 10, 2025"
+Client screen,is displayed,login screen,177d6cfe-c999-8061-a0d5-cb7a4b21f4c7,"MS Teams (with Jody) - Jan 10, 2025"
+Teams,displays app as,iframe,177d6cfe-c999-8061-a0d5-cb7a4b21f4c7,"MS Teams (with Jody) - Jan 10, 2025"
+Teams,provides,group ID,177d6cfe-c999-8061-a0d5-cb7a4b21f4c7,"MS Teams (with Jody) - Jan 10, 2025"
+Teams,provides,user ID,177d6cfe-c999-8061-a0d5-cb7a4b21f4c7,"MS Teams (with Jody) - Jan 10, 2025"
+Most testing,can be done,locally,177d6cfe-c999-8061-a0d5-cb7a4b21f4c7,"MS Teams (with Jody) - Jan 10, 2025"
+MS Teams key,is specific,to the application,177d6cfe-c999-8061-a0d5-cb7a4b21f4c7,"MS Teams (with Jody) - Jan 10, 2025"
+Encrypted key,follows format,msTeamsUserId=big-ol-fake-user-id-789&msTeamsKey=undefined,177d6cfe-c999-8061-a0d5-cb7a4b21f4c7,"MS Teams (with Jody) - Jan 10, 2025"
+we,removed,log configuration for Redis in Terraform,d01917e0-ff74-4c10-909f-7eb74dde0234,Liam
+I,will mention to,Liam about career development meeting,d01917e0-ff74-4c10-909f-7eb74dde0234,Liam
+Liam,is asked about,Terraform and Ansible feelings,d01917e0-ff74-4c10-909f-7eb74dde0234,Liam
+Liam,may move to,senior position,d01917e0-ff74-4c10-909f-7eb74dde0234,Liam
+Liam,needs to complete,career path document,d01917e0-ff74-4c10-909f-7eb74dde0234,Liam
+Liam,wants to know about,AWS certificate payment,d01917e0-ff74-4c10-909f-7eb74dde0234,Liam
+log configuration,should go to,Cloudwatch,d01917e0-ff74-4c10-909f-7eb74dde0234,Liam
+Canonical,creates,Ubuntu images,18ad6cfe-c999-806f-b84e-e35a286a6408,"Canonical - January 29, 2025"
+Canonical,distributes,Ubuntu images,18ad6cfe-c999-806f-b84e-e35a286a6408,"Canonical - January 29, 2025"
+Canonical,strips out,unnecessary components from Python image,18ad6cfe-c999-806f-b84e-e35a286a6408,"Canonical - January 29, 2025"
+Canonical,offers,ESM versions of images,18ad6cfe-c999-806f-b84e-e35a286a6408,"Canonical - January 29, 2025"
+Canonical,provides,top-level pricing with weekday support,18ad6cfe-c999-806f-b84e-e35a286a6408,"Canonical - January 29, 2025"
+Canonical,supports,hardened versions of containers,18ad6cfe-c999-806f-b84e-e35a286a6408,"Canonical - January 29, 2025"
+pricing,costs,$295/VM/year,18ad6cfe-c999-806f-b84e-e35a286a6408,"Canonical - January 29, 2025"
+pricing,costs,$8850 USD for 30 VMs,18ad6cfe-c999-806f-b84e-e35a286a6408,"Canonical - January 29, 2025"
+pricing,requires,1 year term minimum,18ad6cfe-c999-806f-b84e-e35a286a6408,"Canonical - January 29, 2025"
+licenses,can be moved,to EKS estates,18ad6cfe-c999-806f-b84e-e35a286a6408,"Canonical - January 29, 2025"
+transaction,can be processed,through AWS,18ad6cfe-c999-806f-b84e-e35a286a6408,"Canonical - January 29, 2025"
+transaction,can be processed,directly,18ad6cfe-c999-806f-b84e-e35a286a6408,"Canonical - January 29, 2025"
+transaction,can be processed,through re-seller,18ad6cfe-c999-806f-b84e-e35a286a6408,"Canonical - January 29, 2025"
+Docker Hub containers,do not have,pro-exclusive patches,18ad6cfe-c999-806f-b84e-e35a286a6408,"Canonical - January 29, 2025"
+Docker Hub containers,backport,versions of dependencies to earlier versions,18ad6cfe-c999-806f-b84e-e35a286a6408,"Canonical - January 29, 2025"
+support,lasts,10 years,18ad6cfe-c999-806f-b84e-e35a286a6408,"Canonical - January 29, 2025"
+EKS,upgraded from,Amazon Linux 2,18dd6cfe-c999-805c-8700-d5349f3f41b6,EKS Upgrade from Amazon Linux 2 to Amazon Linux 2023
+EKS,upgraded to,Amazon Linux 2023,18dd6cfe-c999-805c-8700-d5349f3f41b6,EKS Upgrade from Amazon Linux 2 to Amazon Linux 2023
+Issue,resolved by,installing the pod identity add-on,18dd6cfe-c999-805c-8700-d5349f3f41b6,EKS Upgrade from Amazon Linux 2 to Amazon Linux 2023
+AWS load balancer controller,is,still failing,18dd6cfe-c999-805c-8700-d5349f3f41b6,EKS Upgrade from Amazon Linux 2 to Amazon Linux 2023
+Alaadin,should own,post mortem for NordLayer,f621dc76-1550-4051-94e0-a1ab0714cb0d,Paul
+Alaadin,wants to look at,Audit logs on production servers,f621dc76-1550-4051-94e0-a1ab0714cb0d,Paul
+Team,would look like,undefined,f621dc76-1550-4051-94e0-a1ab0714cb0d,Paul
+new Teams app,being built in,Docker,f621dc76-1550-4051-94e0-a1ab0714cb0d,Paul
+Crowdstrike,owned by,undefined,f621dc76-1550-4051-94e0-a1ab0714cb0d,Paul
+messages/questions,sent to,#devops,f621dc76-1550-4051-94e0-a1ab0714cb0d,Paul
+We,need a list of,remediation required for SOC2,f621dc76-1550-4051-94e0-a1ab0714cb0d,Paul
+answers,provided by,someone instead of Bart,f621dc76-1550-4051-94e0-a1ab0714cb0d,Paul
+DevOps roadmap,exists,undefined,f621dc76-1550-4051-94e0-a1ab0714cb0d,Paul
+DevOps work,exists,undefined,f621dc76-1550-4051-94e0-a1ab0714cb0d,Paul
+onboarding plan,made local copy of,undefined,f621dc76-1550-4051-94e0-a1ab0714cb0d,Paul
+onboarding plan,shared with,Marc and Paul,f621dc76-1550-4051-94e0-a1ab0714cb0d,Paul
+Irfan’s Terraform,handled by,undefined,f621dc76-1550-4051-94e0-a1ab0714cb0d,Paul
+psql,creates,blcorp_temp,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+brew,installs,postgis,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+CREATE EXTENSION,creates,pg_stat_statements,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+CREATE EXTENSION,creates if not exists,postgis,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+pg_restore,restores from,dev-us-2025-02-06-18-13.dump,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+DO $$,checks existence of,doadmin,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+DO $$,checks existence of,rdsadmin,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+DO $$,checks existence of,bladmin,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+DO $$,checks existence of,postgres,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+DO $$,checks existence of,bucketlist_live,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+DO $$,checks existence of,bucketlist_dev,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+DO $$,checks existence of,nagios,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+DO $$,checks existence of,bucketlist_prod_us,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+ALTER DATABASE,sets owner to,bucketlist_live,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+ALTER USER,sets password for,doadmin,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+GRANT,grants to,doadmin,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+GRANT,grants to,nagios,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+ALTER ROLE,sets superuser,doadmin,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+ALTER ROLE,sets superuser,nagios,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+ALTER ROLE,sets superuser,bucketlist_live,192d6cfe-c999-8005-ae54-d4e0fa3caa8f,Postgresql Restore
+Tim Buchinger,mentioned,weirdness about screenshot,193d6cfe-c999-812e-8034-db12285f85ff,Testing 07-02-2025
+Tim Buchinger,queried,duration of meeting,193d6cfe-c999-812e-8034-db12285f85ff,Testing 07-02-2025
+Tim Buchinger,noted,ech issue,193d6cfe-c999-812e-8034-db12285f85ff,Testing 07-02-2025
+Tim Buchinger,tested,transcription capabilities,193d6cfe-c999-812e-8034-db12285f85ff,Testing 07-02-2025
+Tim Buchinger,started,meeting,193d6cfe-c999-812e-8034-db12285f85ff,Testing 07-02-2025
+Tim Buchinger,prepared,OS updates,193d6cfe-c999-81aa-91b8-e760f9d2abaf,Platform Standup 07-02-2025
+Tim Buchinger,started,meeting,193d6cfe-c999-81aa-91b8-e760f9d2abaf,Platform Standup 07-02-2025
+Paul Wierenga,considered,database scrubbing process,193d6cfe-c999-81aa-91b8-e760f9d2abaf,Platform Standup 07-02-2025
+Paul Wierenga,discussed,Sftp upgrade,193d6cfe-c999-81aa-91b8-e760f9d2abaf,Platform Standup 07-02-2025
+Irfan Ahmad,worked on,engagement report,193d6cfe-c999-81aa-91b8-e760f9d2abaf,Platform Standup 07-02-2025
+Irfan Ahmad,needed,unscrubbed database,193d6cfe-c999-81aa-91b8-e760f9d2abaf,Platform Standup 07-02-2025
+Mark,looked at,Sftp issue,193d6cfe-c999-81aa-91b8-e760f9d2abaf,Platform Standup 07-02-2025
+Mark,worked on,scrubbing spike,193d6cfe-c999-81aa-91b8-e760f9d2abaf,Platform Standup 07-02-2025
+Liam Maloney,tested,epso,193d6cfe-c999-81aa-91b8-e760f9d2abaf,Platform Standup 07-02-2025
+Liam Maloney,shifted,backlog,193d6cfe-c999-81aa-91b8-e760f9d2abaf,Platform Standup 07-02-2025
+Tiffany,needed,database copy,193d6cfe-c999-81aa-91b8-e760f9d2abaf,Platform Standup 07-02-2025
+Alaadin Addas,suggested,remote dev environments,193d6cfe-c999-81aa-91b8-e760f9d2abaf,Platform Standup 07-02-2025
+Alaadin Addas,proposed,online instance for testing,193d6cfe-c999-81aa-91b8-e760f9d2abaf,Platform Standup 07-02-2025
+Paul Wierenga,worked on,CSV script,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Paul Wierenga,working on,SQL scripts for e-commerce monitoring,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Irfan Ahmad,notified,migration already merged with release branch,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Irfan Ahmad,assigned,disabled authentication option for first time MFA setup to Monique Richard,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Irfan Ahmad,added,code review feedback,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Irfan Ahmad,asked,Nazma Panjwani for update on version info,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Irfan Ahmad,tested,beekeeper stories,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Irfan Ahmad,assigned,beekeeper stories to Jody Chambers for review,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Irfan Ahmad,assigned,another beekeeper story to Monique Richard for code review,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Irfan Ahmad,assigned,CSV script to Monique Richard for review,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Irfan Ahmad,assigned,multiple stories to Monique Richard,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Irfan Ahmad,explained,webhook stories and their dependencies,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Irfan Ahmad,planned,adding more tickets for webhook epic,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Lauren Moncks,requested,keeping out the migration,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Day Kirby,suggested,untangling webhook stories,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Nazma Panjwani,provided,update on version info being under pure approval,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Monique Richard,working on,beekeeper story,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Jody Chambers,asked,status of MS Teams bug fix,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Jody Chambers,explained,MS Teams bug fix is dependent on another ticket,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Jody Chambers,explained,current webhook implementation and future changes,193d6cfe-c999-8161-bec0-f6cfadd71679,Dev Standup (Team Capybara) 07-02-2025
+Tim Buchinger,ended,call,14fd6cfe-c999-81cc-8e5a-e0bca32f7100,Meeting Transcription
+Tim Buchinger,thanked,participants,14fd6cfe-c999-81cc-8e5a-e0bca32f7100,Meeting Transcription
+Paul Wierenga,uses,Emacs,193d6cfe-c999-81c1-9227-d6711feab977,Standup - The Jellies! 07-02-2025
+Paul Wierenga,suggests,discussing in retrospective,193d6cfe-c999-81c1-9227-d6711feab977,Standup - The Jellies! 07-02-2025
+Lauren Moncks,suggests,support ticket,193d6cfe-c999-81c1-9227-d6711feab977,Standup - The Jellies! 07-02-2025
+Mark,uses,pyterm,193d6cfe-c999-81c1-9227-d6711feab977,Standup - The Jellies! 07-02-2025
+Day Kirby,remembers,Tango transfers bug,193d6cfe-c999-81c1-9227-d6711feab977,Standup - The Jellies! 07-02-2025
+Jamie Salmon,stays,home,193d6cfe-c999-81c1-9227-d6711feab977,Standup - The Jellies! 07-02-2025
+Jamie Salmon,works,at home,193d6cfe-c999-81c1-9227-d6711feab977,Standup - The Jellies! 07-02-2025
+Jamie Salmon,asks,Joseph Haddad,193d6cfe-c999-81c1-9227-d6711feab977,Standup - The Jellies! 07-02-2025
+Jamie Salmon,tracks,log in and settings changes,193d6cfe-c999-81c1-9227-d6711feab977,Standup - The Jellies! 07-02-2025
+Jamie Salmon,switches to,VS Code,193d6cfe-c999-81c1-9227-d6711feab977,Standup - The Jellies! 07-02-2025
+Jamie Salmon,agrees to,discuss in retrospective,193d6cfe-c999-81c1-9227-d6711feab977,Standup - The Jellies! 07-02-2025
+Joseph Haddad,completed,Limit Reached Email translation,193d6cfe-c999-81c1-9227-d6711feab977,Standup - The Jellies! 07-02-2025
+Joseph Haddad,found,bugs,193d6cfe-c999-81c1-9227-d6711feab977,Standup - The Jellies! 07-02-2025
+Joseph Haddad,removed,field from recognized user table,193d6cfe-c999-81c1-9227-d6711feab977,Standup - The Jellies! 07-02-2025
+Monique,started using,field for bucket list wrapped,193d6cfe-c999-81c1-9227-d6711feab977,Standup - The Jellies! 07-02-2025
+Data Software Developer,has experience in,data space,196d6cfe-c999-808b-859c-da965365f5ae,"Data Software Developer - February 10, 2024"
+Data Software Developer,considers,importance for next role,196d6cfe-c999-808b-859c-da965365f5ae,"Data Software Developer - February 10, 2024"
+experience,lasts for,5 years,196d6cfe-c999-808b-859c-da965365f5ae,"Data Software Developer - February 10, 2024"
+Kaine Black,has,7 or 8 years of experience in data analytics,196d6cfe-c999-805b-9360-d32e4499c205,"Kaine Black - February 10, 2024"
+Kaine Black,worked,at the university in the lab after graduation,196d6cfe-c999-805b-9360-d32e4499c205,"Kaine Black - February 10, 2024"
+Kaine Black,is currently working on,"migrating legacy data pipelines to modern, cloud architecture",196d6cfe-c999-805b-9360-d32e4499c205,"Kaine Black - February 10, 2024"
+Kaine Black,is,a manager,196d6cfe-c999-805b-9360-d32e4499c205,"Kaine Black - February 10, 2024"
+Kaine Black,is leading,a team,196d6cfe-c999-805b-9360-d32e4499c205,"Kaine Black - February 10, 2024"
+Kaine Black,is leading,projects,196d6cfe-c999-805b-9360-d32e4499c205,"Kaine Black - February 10, 2024"
+Kaine Black,is,very well spoken,196d6cfe-c999-805b-9360-d32e4499c205,"Kaine Black - February 10, 2024"
+Kaine Black,is not so interested in,managing people,196d6cfe-c999-805b-9360-d32e4499c205,"Kaine Black - February 10, 2024"
+Jazib Khan,cut off,Morgan,197d6cfe-c999-80cd-86c8-ee881ec97394,"Jazib Khan - February 11, 2025"
+Jazib Khan,feels,job description matches well with current work,197d6cfe-c999-80cd-86c8-ee881ec97394,"Jazib Khan - February 11, 2025"
+Jazib Khan,wants to be,cloud agnostic,197d6cfe-c999-80cd-86c8-ee881ec97394,"Jazib Khan - February 11, 2025"
+Jazib Khan,uses,Apache spark on EKS,197d6cfe-c999-80cd-86c8-ee881ec97394,"Jazib Khan - February 11, 2025"
+Jazib Khan,uses,great expectations for data validation,197d6cfe-c999-80cd-86c8-ee881ec97394,"Jazib Khan - February 11, 2025"
+Jazib Khan,cut off,me for the 2nd time,197d6cfe-c999-80cd-86c8-ee881ec97394,"Jazib Khan - February 11, 2025"
+Jazib Khan,cut off,me for the 3rd time,197d6cfe-c999-80cd-86c8-ee881ec97394,"Jazib Khan - February 11, 2025"
+Justin Bisal,started in,traditional engineering roles,198d6cfe-c999-80f3-a31f-c9480663e8a7,"Justin Bisal - February 12, 2025"
+Justin Bisal,was prepared for,an example of how recognition in the workplace affected him personally,198d6cfe-c999-80f3-a31f-c9480663e8a7,"Justin Bisal - February 12, 2025"
+Justin Bisal,wants to leave,Orion Health,198d6cfe-c999-80f3-a31f-c9480663e8a7,"Justin Bisal - February 12, 2025"
+Liam,is more focused on,development side,439d2805-873d-4b4f-b6f7-8be1b5959157,Interviews
+Liam,was assigned to a higher level of,quality,439d2805-873d-4b4f-b6f7-8be1b5959157,Interviews
+Liam,provided,more detailed answers,439d2805-873d-4b4f-b6f7-8be1b5959157,Interviews
+Liam,is stronger,technically,439d2805-873d-4b4f-b6f7-8be1b5959157,Interviews
+Liam,wants more experience with,greenfield deployments,439d2805-873d-4b4f-b6f7-8be1b5959157,Interviews
+Liam,used,work email for the interview,439d2805-873d-4b4f-b6f7-8be1b5959157,Interviews
+Tony,has experience with,managing virtual machines with Ansible,439d2805-873d-4b4f-b6f7-8be1b5959157,Interviews
+Cory Malkin,is on contract until,end of April,19ed6cfe-c999-8063-8ddc-ed38ef8160b0,"Cory Malkin - February 18, 2024"
+Cory Malkin,can give,two weeks notice at any time,19ed6cfe-c999-8063-8ddc-ed38ef8160b0,"Cory Malkin - February 18, 2024"
+Cory Malkin,is a big proponent of,Cursor,19ed6cfe-c999-8063-8ddc-ed38ef8160b0,"Cory Malkin - February 18, 2024"
+Cory Malkin,likes the opportunity to,own the data architecture,19ed6cfe-c999-8063-8ddc-ed38ef8160b0,"Cory Malkin - February 18, 2024"

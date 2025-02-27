@@ -1,0 +1,47 @@
+version: 1
+disable_existing_loggers: false
+
+defaults:
+  level: INFO
+
+loggers:
+  src:  # Parent logger for all our application code
+    level: INFO
+    handlers: [console]
+    propagate: false
+  src.storage.neo4j:
+    level: INFO
+    propagate: false
+  src.storage.memgraph:
+    level: DEBUG
+    handlers: [console]
+    propagate: false
+  src.llm.chunker:
+    level: DEBUG
+    propagate: false
+  src.llm.extractor:
+    level: INFO
+    propagate: false
+  src.storage.chroma:
+    level: INFO
+    propagate: false
+  src.api.notion:
+    level: INFO
+    propagate: false
+  urllib3:
+    level: INFO
+  chromadb:
+    level: INFO
+  httpcore:
+    level: INFO
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    formatter: colored
+    stream: ext://sys.stdout
+
+formatters:
+  colored:
+    class: src.utils.logging.ColoredFormatter
+    format: "%(asctime)s - %(levelname)s - %(name)s - [%(filename)s:%(lineno)d] - %(message)s"
