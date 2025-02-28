@@ -106,60 +106,58 @@ class ChromaStore(DocumentStore):
         """
         self.delete_document(notion_id)
 
-    def create_note(
-        self,
-        notion_id: str,
-        title: str,
-        content: str,
-        embedding: List[float],
-        last_modified: str,
-    ) -> None:
-        """Create a new note.
-
-        Args:
-            notion_id: Notion page ID
-            title: Note title
-            content: Note content
-            embedding: Vector embedding
-            last_modified: Last modification timestamp
-        """
-        # Debug log content before storage
-        logger.debug("Chroma pre-storage content for %s:\n%s", notion_id, content)
-        logger.debug("Chroma content newlines count: %d", content.count("\n"))
-
-        document = Document(
-            page_content=content,
-            metadata={
-                "title": title,
-                "last_updated": last_modified,
-                "notion_id": notion_id,
-            },
-            id=str(uuid.uuid4()),
-        )
-        self.vector_store.add_documents([document])
-
-    def create_chunks(self, notion_id: str, chunks: List[str]) -> None:
-        """Create chunks for a document.
+    def create_chunks(self, notion_id: str, chunks: List[Dict]) -> None:
+        """Create note chunks with consistent metadata.
 
         Args:
             notion_id: Parent note ID
-            chunks: List of text chunks
+            chunks: List of chunk dictionaries with metadata
         """
         logger.debug(f"Storing {len(chunks)} chunks in Chroma")
 
-        for index, chunk_text in enumerate(chunks):
-            document = Document(
-                page_content=chunk_text,
-                metadata={
+        for index, chunk in enumerate(chunks):
+            # Get text and metadata from chunk
+            chunk_text = chunk["text"]
+            metadata = chunk.get("metadata", {}).copy()
+
+            # Ensure required metadata fields
+            metadata.update(
+                {
                     "notion_id": notion_id,
                     "chunk_number": index,
-                },
+                    "total_chunks": len(chunks),
+                }
+            )
+
+            # Add chunk metadata if available
+            if chunk.get("summary"):
+                metadata["summary"] = chunk["summary"]
+                chunk_text = f"Summary: {chunk['summary']}\n\n{chunk_text}"
+
+            # Add any additional metadata from the chunk
+            for field in [
+                "token_count",
+                "chunking_model",
+                "chunking_provider",
+                "summary_model",
+                "summary_provider",
+                "embedding_model",
+                "embedding_provider",
+            ]:
+                if chunk.get(field):
+                    metadata[field] = chunk[field]
+
+            document = Document(
+                page_content=chunk_text,
+                metadata=metadata,
                 id=str(uuid.uuid4()),
             )
 
             self.vector_store.add_documents([document])
 
-        logger.info("Document chunks have been created in Chroma.")
+        logger.info(
+            f"Successfully created {len(chunks)} chunks for document {notion_id}"
+        )
 
     def create_relationships(
         self, notion_id: str, relationships: List[Dict[str, str]], timestamp: str
@@ -199,69 +197,6 @@ class ChromaStore(DocumentStore):
             SHA-256 hash of content
         """
         return hashlib.sha256(content.encode()).hexdigest()
-
-    def update_document(
-        self,
-        notion_id: str,
-        chunks: List[Union[str, TextChunk]],
-        title: str,
-        last_modified: str,
-    ) -> None:
-        """Update or create document chunks in vector store.
-
-        Args:
-            notion_id: Notion page ID
-            chunks: List of pre-generated chunks (either strings or TextChunk objects)
-            title: Document title
-            last_modified: Last modification timestamp
-        """
-        logger.debug(f"Storing {len(chunks)} chunks in Chroma")
-
-        for index, chunk in enumerate(chunks):
-            # Get chunk text and summary
-            if hasattr(chunk, "text"):
-                chunk_text = chunk.text
-                chunk_summary = chunk.summary if hasattr(chunk, "summary") else None
-            else:
-                chunk_text = chunk
-                chunk_summary = None
-
-            # Build metadata dictionary with all chunk metadata
-            metadata = {
-                "title": title,
-                "last_updated": last_modified,
-                "notion_id": notion_id,
-                "chunk_number": index,
-            }
-
-            # Add chunk metadata if TextChunk object
-            if isinstance(chunk, TextChunk):
-                if chunk.summary is not None:
-                    metadata["summary"] = chunk.summary
-                if chunk.token_count is not None:
-                    metadata["token_count"] = chunk.token_count
-                if chunk.chunking_model is not None:
-                    metadata["chunking_model"] = chunk.chunking_model
-                if chunk.chunking_provider is not None:
-                    metadata["chunking_provider"] = chunk.chunking_provider
-                if chunk.summary_model is not None:
-                    metadata["summary_model"] = chunk.summary_model
-                if chunk.summary_provider is not None:
-                    metadata["summary_provider"] = chunk.summary_provider
-                if chunk.embedding_model is not None:
-                    metadata["embedding_model"] = chunk.embedding_model
-                if chunk.embedding_provider is not None:
-                    metadata["embedding_provider"] = chunk.embedding_provider
-
-            document = Document(
-                page_content=chunk_text,
-                metadata=metadata,
-                id=str(uuid.uuid4()),
-            )
-
-            self.vector_store.add_documents([document])
-
-        logger.info("Document has been updated in Chroma.")
 
     def get_documents(self, notion_id: Optional[str] = None) -> Iterator[Dict]:
         """Get all documents or a specific document.
@@ -312,6 +247,10 @@ class ChromaStore(DocumentStore):
             metadata = results["metadatas"][i]  # Get metadata for current chunk
             chunk_dict = {
                 "content": content,
+                "chunk_number": metadata.get(
+                    "chunk_number", i
+                ),  # Default to index if not set
+                "total_chunks": metadata.get("total_chunks"),
                 "summary": metadata.get("summary"),
                 "token_count": metadata.get("token_count"),
                 "chunking_model": metadata.get("chunking_model"),
@@ -323,7 +262,8 @@ class ChromaStore(DocumentStore):
             }
             chunks.append(chunk_dict)
 
-        return chunks
+        # Sort by chunk number
+        return sorted(chunks, key=lambda x: x["chunk_number"])
 
     def get_document_metadata(self, notion_id: str) -> Optional[Dict]:
         """Get metadata for a document.

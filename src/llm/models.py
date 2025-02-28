@@ -12,6 +12,7 @@ class TextChunk:
     token_count: Optional[int] = None
     chunking_model: Optional[str] = None  # Model used for semantic chunking
     chunking_provider: Optional[str] = None  # Provider used for chunking
+    title: Optional[str] = None  # Document title
     summary: Optional[str] = None  # Generated summary
     summary_model: Optional[str] = None  # Model used for summary
     summary_provider: Optional[str] = None  # Provider used for summary
@@ -20,11 +21,19 @@ class TextChunk:
     embedding_provider: Optional[str] = None  # Provider used for embedding
 
     def format_with_summary(self) -> str:
-        """Format the chunk with its summary in the standard format.
+        """Format the chunk with summary and title in the standard format.
 
         Returns:
-            Formatted string with summary and content
+            Formatted string with summary, title, and content
         """
-        if not self.summary:
-            return self.text
-        return f"Summary: {self.summary}\n\n{self.text}"
+        result = []
+        if self.summary:
+            result.append(self.summary)
+            result.append("")  # Blank line after summary
+
+        if self.title:
+            result.append(f"# {self.title}")
+            result.append("")  # Blank line after title
+
+        result.append(self.text)
+        return "\n".join(result)

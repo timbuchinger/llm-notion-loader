@@ -1,5 +1,5 @@
 import logging
-from typing import Dict, List, Optional
+from typing import Dict, Iterator, List, Optional, Set
 
 from neo4j import GraphDatabase
 
@@ -92,54 +92,30 @@ class Neo4jStore(DocumentStore):
                 notion_id=notion_id,
             )
 
-    def create_note(
-        self,
-        notion_id: str,
-        title: str,
-        content: str,
-        embedding: List[float],
-        last_modified: str,
-    ) -> None:
-        """Create a new note node.
-
-        Args:
-            notion_id: Notion page ID
-            title: Note title
-            content: Note content
-            embedding: Vector embedding of content
-        """
-        with self.driver.session(database=self.database) as session:
-            session.run(
-                """
-                CREATE (n:Note {
-                    id: $notion_id,
-                    title: $title,
-                    content: $content,
-                    embedding: $embedding,
-                    last_modified: $last_modified
-                })
-                """,
-                notion_id=notion_id,
-                title=title,
-                content=content,
-                embedding=embedding,
-                last_modified=last_modified,
-            )
-
     def create_chunks(self, notion_id: str, chunks: List[Dict]) -> None:
-        """Create note chunk nodes and relationships.
+        """Create note chunks with consistent metadata.
 
         Args:
             notion_id: Parent note ID
             chunks: List of chunk dictionaries with metadata
         """
-        with self.driver.session() as session:
+        with self.driver.session(database=self.database) as session:
             previous_chunk_id = None
+
+            # Create note node first
+            session.run(
+                """
+                MERGE (n:Note {id: $notion_id})
+                """,
+                notion_id=notion_id,
+            )
 
             for i, chunk in enumerate(chunks):
                 chunk_id = f"{notion_id}-chunk-{i}"
+                chunk_text = chunk["text"]
+                metadata = chunk.get("metadata", {})
 
-                # Create chunk node with all metadata
+                # Create chunk node with consistent metadata
                 session.run(
                     """
                     MATCH (n:Note {id: $notion_id})
@@ -147,32 +123,42 @@ class Neo4jStore(DocumentStore):
                         id: $chunk_id,
                         content: $content,
                         parentNote: $notion_id,
-                        chunkNumber: $chunk_number,
+                        title: $title,
+                        chunk_number: $chunk_number,
+                        total_chunks: $total_chunks,
                         token_count: $token_count,
                         chunking_model: $chunking_model,
                         chunking_provider: $chunking_provider,
                         summary: $summary,
                         summary_model: $summary_model,
                         summary_provider: $summary_provider,
-                        embedding: $embedding,
                         embedding_model: $embedding_model,
-                        embedding_provider: $embedding_provider
+                        embedding_provider: $embedding_provider,
+                        last_modified: $last_modified
                     })
+                    SET c.embedding = $embedding
                     CREATE (n)-[:HAS_CHUNK]->(c)
                     """,
                     notion_id=notion_id,
                     chunk_id=chunk_id,
-                    content=chunk.get("text", ""),
+                    content=(
+                        f"Summary: {metadata.get('summary', '')}\n\n{chunk_text}"
+                        if metadata.get("summary")
+                        else chunk_text
+                    ),
+                    title=metadata.get("title", ""),
                     chunk_number=i,
-                    token_count=chunk.get("token_count"),
-                    chunking_model=chunk.get("chunking_model"),
-                    chunking_provider=chunk.get("chunking_provider"),
-                    summary=chunk.get("summary"),
-                    summary_model=chunk.get("summary_model"),
-                    summary_provider=chunk.get("summary_provider"),
-                    embedding=chunk.get("embedding"),
-                    embedding_model=chunk.get("embedding_model"),
-                    embedding_provider=chunk.get("embedding_provider"),
+                    total_chunks=len(chunks),
+                    token_count=metadata.get("token_count"),
+                    chunking_model=metadata.get("chunking_model"),
+                    chunking_provider=metadata.get("chunking_provider"),
+                    summary=metadata.get("summary"),
+                    summary_model=metadata.get("summary_model"),
+                    summary_provider=metadata.get("summary_provider"),
+                    embedding=metadata.get("embedding", []),
+                    embedding_model=metadata.get("embedding_model"),
+                    embedding_provider=metadata.get("embedding_provider"),
+                    last_modified=metadata.get("last_modified"),
                 )
 
                 # Create NEXT_CHUNK relationship if not the first chunk
@@ -189,6 +175,10 @@ class Neo4jStore(DocumentStore):
 
                 previous_chunk_id = chunk_id
 
+            logger.info(
+                f"Created {len(chunks)} chunks for document {notion_id} in Neo4j"
+            )
+
     def create_relationships(
         self, notion_id: str, relationships: List[Dict[str, str]], timestamp: str
     ) -> None:
@@ -197,6 +187,7 @@ class Neo4jStore(DocumentStore):
         Args:
             notion_id: Parent note ID
             relationships: List of relationship dictionaries
+            timestamp: When relationships were created
         """
         with self.driver.session(database=self.database) as session:
             for rel in relationships:
@@ -226,19 +217,15 @@ class Neo4jStore(DocumentStore):
                     try:
                         session.run(
                             """
-                            MATCH (n:Note {id: $notion_id})
                             MERGE (s:Entity {name: $subject})
                             MERGE (o:Entity {name: $object})
-                            // Create source reference for relationship
                             CREATE (sr:SourceReference {
                                 note_id: $notion_id,
                                 timestamp: $timestamp,
-                                type: "relationship"
+                                type: "relationship",
+                                relation_type: $relation
                             })
                             MERGE (s)-[r:RELATION {type: $relation}]->(o)
-                            MERGE (r)-[:HAS_SOURCE]->(sr)
-
-                            // Add entity references
                             MERGE (s)-[:HAS_SOURCE]->(sr)
                             MERGE (o)-[:HAS_SOURCE]->(sr)
                             """,
@@ -257,25 +244,73 @@ class Neo4jStore(DocumentStore):
                     logger.error(f"Failed to process relationship {rel}: {str(e)}")
                     continue
 
-    def get_note_hash(self, notion_id: str) -> Optional[str]:
-        """Get the stored hash for a note.
+    def get_documents(self, notion_id: Optional[str] = None) -> Iterator[Dict]:
+        """Get all documents or a specific document.
 
         Args:
-            notion_id: Note ID
+            notion_id: Optional Notion page ID to retrieve specific document
 
         Returns:
-            Stored hash if found, None otherwise
+            Iterator of document dictionaries
+        """
+        with self.driver.session(database=self.database) as session:
+            query = """
+            MATCH (c:NoteChunk)
+            WHERE c.chunk_number = 0
+            {}
+            RETURN DISTINCT c.parentNote as notion_id, c.title as title, c.content as content
+            """.format(
+                "AND c.parentNote = $notion_id" if notion_id else ""
+            )
+
+            params = {"notion_id": notion_id} if notion_id else {}
+            result = session.run(query, params)
+
+            for record in result:
+                yield {
+                    "notion_id": record["notion_id"],
+                    "title": record["title"],
+                    "content": record["content"],
+                }
+
+    def get_chunks(self, notion_id: str) -> List[Dict]:
+        """Get all chunks for a document.
+
+        Args:
+            notion_id: Parent note ID
+
+        Returns:
+            List of chunk dictionaries
         """
         with self.driver.session(database=self.database) as session:
             result = session.run(
                 """
-                MATCH (n:Note {id: $notion_id})
-                RETURN n.hash as hash
+                MATCH (n:Note {id: $notion_id})-[:HAS_CHUNK]->(c:NoteChunk)
+                RETURN
+                    c.content as content,
+                    c.chunk_number as chunk_number,
+                    c.total_chunks as total_chunks,
+                    c.summary as summary,
+                    c.token_count as token_count,
+                    c.chunking_model as chunking_model,
+                    c.chunking_provider as chunking_provider
+                ORDER BY c.chunk_number
                 """,
                 notion_id=notion_id,
-            ).single()
+            )
 
-            return result["hash"] if result else None
+            return [
+                {
+                    "content": record["content"],
+                    "chunk_number": record["chunk_number"],
+                    "total_chunks": record["total_chunks"],
+                    "summary": record["summary"],
+                    "token_count": record["token_count"],
+                    "chunking_model": record["chunking_model"],
+                    "chunking_provider": record["chunking_provider"],
+                }
+                for record in result
+            ]
 
     def add_entity_reference(
         self, entity_name: str, notion_id: str, timestamp: str
@@ -302,6 +337,26 @@ class Neo4jStore(DocumentStore):
                 notion_id=notion_id,
                 timestamp=timestamp,
             )
+
+    def get_note_hash(self, notion_id: str) -> Optional[str]:
+        """Get the stored hash for a note.
+
+        Args:
+            notion_id: Note ID
+
+        Returns:
+            Stored hash if found, None otherwise
+        """
+        with self.driver.session(database=self.database) as session:
+            result = session.run(
+                """
+                MATCH (c:NoteChunk {parentNote: $notion_id, chunk_number: 0})
+                RETURN c.hash as hash
+                """,
+                notion_id=notion_id,
+            ).single()
+
+            return result["hash"] if result else None
 
     def remove_note_references(self, notion_id: str) -> Set[str]:
         """Remove all references from a note and return orphaned entities.

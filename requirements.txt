@@ -7,3 +7,4 @@ langchain-groq
 PyYAML
 tiktoken
 neo4j
+pinecone-client>=2.2.4

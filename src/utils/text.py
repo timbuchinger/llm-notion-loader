@@ -28,6 +28,7 @@ def split_text(
     max_tokens: int = 300,
     overlap: int = 50,
     stats: Optional[SyncStats] = None,
+    document_title: str = "Untitled",
 ) -> Union[List[str], List[TextChunk]]:
     """Split text into chunks using either semantic or token-based approach.
 
@@ -37,6 +38,7 @@ def split_text(
         max_tokens: Maximum number of tokens per chunk (for token-based)
         overlap: Number of tokens to overlap between chunks (for token-based)
         stats: Optional stats tracker instance
+        document_title: Title of the document being chunked
 
     Returns:
         List of either text chunks (token-based) or TextChunk objects (semantic)
@@ -51,7 +53,7 @@ def split_text(
             from ..llm.chunker import ChunkingLLM
 
             chunker = ChunkingLLM()
-            chunks = chunker.chunk_text(text)
+            chunks = chunker.chunk_text(text, title=document_title)
 
             if chunker.validate_chunks(chunks):
                 logger.debug("Successfully created semantic chunks")
