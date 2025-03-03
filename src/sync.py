@@ -133,13 +133,29 @@ class NotionSync:
             # Update store-specific handling
             # Add consistent metadata to chunks
             for i, chunk in enumerate(chunks):
-                chunk_metadata = {
-                    "title": title,
-                    "last_modified": last_modified,
-                    "total_chunks": len(chunks),
-                    "chunk_number": i,
-                }
+                # Create base metadata or copy existing
+                chunk_metadata = (
+                    chunk.metadata.copy() if hasattr(chunk, "metadata") else {}
+                )
+
+                # Update with required fields
+                chunk_metadata.update(
+                    {
+                        "title": title,
+                        "last_modified": last_modified,
+                        "total_chunks": len(chunks),
+                        "chunk_number": i,  # Ensure chunk_number is always set as an integer
+                    }
+                )
+
+                # Assign back to chunk
                 chunk.metadata = chunk_metadata
+
+                # Log warning if chunk doesn't have required metadata
+                if not isinstance(chunk_metadata.get("chunk_number"), int):
+                    logger.warning(
+                        f"Invalid chunk_number type for chunk {i} of {notion_id}"
+                    )
 
             # Only update stores that need updating
             for store_name in updating_stores:

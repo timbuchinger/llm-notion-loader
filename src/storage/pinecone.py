@@ -185,6 +185,23 @@ class PineconeStore(DocumentStore):
                     chunk_ids.append(chunk_id)
 
                     metadata = chunk.get("metadata", {}).copy()
+
+                    # Ensure chunk has valid chunk_number from input metadata
+                    chunk_number = metadata.get("chunk_number")
+                    if chunk_number is None or chunk_number == "":
+                        chunk_number = processed_chunks
+                        logger.warning(
+                            f"Found missing/invalid chunk_number for {notion_id}, using {chunk_number}"
+                        )
+                    else:
+                        try:
+                            chunk_number = int(chunk_number)
+                        except (ValueError, TypeError):
+                            chunk_number = processed_chunks
+                            logger.warning(
+                                f"Invalid chunk_number format for {notion_id}, using {chunk_number}"
+                            )
+
                     # Format text with summary for dict input, mirroring TextChunk behavior
                     text_parts = []
                     if "summary" in chunk:
@@ -200,7 +217,7 @@ class PineconeStore(DocumentStore):
                     metadata.update(
                         {
                             "notion_id": notion_id,
-                            "chunk_number": processed_chunks,
+                            "chunk_number": chunk_number,
                             "total_chunks": total_chunks,
                             "text": formatted_text,
                         }
