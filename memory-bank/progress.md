@@ -5,27 +5,21 @@
 ### Core System
 - [x] Notion API integration with markdown conversion
 - [x] Document processing pipeline
-- [x] Multi-store synchronization
+- [x] Single store synchronization
 - [x] Configuration management
 - [x] Logging system
 - [x] Statistics tracking
 - [x] Error handling and recovery
 
-### Document Stores
-- [x] ChromaDB integration
+### Document Store
+- [x] Pinecone integration
   - Vector storage
-  - Metadata management
+  - Document metadata
   - Hash-based change detection
-  - Collection management
-- [x] Memgraph support
-  - Entity relationship storage
-  - Chunk summaries
-  - Graph schema constraints
   - Relationship tracking
-  - Confirmed that newlines are preserved in the table format
+  - Collection management
 - [x] Store management system
-  - Dynamic store loading
-  - Modular architecture
+  - Focused single store architecture
   - Resource cleanup
   - Connection handling
 
@@ -95,7 +89,7 @@
    - Status: Enhanced error handling
    - Priority: High
 
-2. Connection stability with graph stores
+2. Connection stability with Pinecone
    - Impact: Low
    - Status: Monitoring
    - Priority: Medium
@@ -179,11 +173,11 @@
 ## Notes 📝
 
 ### Latest Updates
-- Added Groq LLM support
-- Improved chunking algorithm
-- Enhanced error handling
-- Added rate limiting
+- Removed graph database implementations
+- Simplified to single Pinecone backend
+- Streamlined store management
 - Updated configuration
+- Improved error handling
 
 ### Observations
 - System handles medium documents well

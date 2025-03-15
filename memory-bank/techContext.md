@@ -4,9 +4,7 @@
 
 ### Core Requirements
 - Python 3.8+
-- ChromaDB instance
-- Memgraph instance (optional)
-- Neo4j instance (optional)
+- Pinecone account with API access
 - Notion API access
 - LLM provider (Ollama, Gemini, or Groq)
 
@@ -21,45 +19,29 @@ pip install -e .
 
 ### Core Python Packages
 - `notional-python`: Notion API client
-- `chromadb`: Vector database client
-- `neo4j`: Neo4j graph database driver
+- `pinecone`: Pinecone client
 - `langchain`: LLM framework and abstractions
 - `langchain-ollama`: Ollama integration
 - `tiktoken`: Token counting library
 - `pyyaml`: YAML configuration parsing
 - `python-dotenv`: Environment variable management
 
-### Database Systems
+### Storage System
 
-#### ChromaDB
+#### Pinecone
 - Purpose: Vector storage and semantic search
 - Requirements:
-  - Running ChromaDB instance
-  - Authentication token
-  - Collection name
+  - Pinecone API key
+  - Pinecone environment
+  - Index name
+  - Optional namespace
 - Features:
   - Vector storage and search
   - Document metadata storage
   - Content hash tracking
   - Chunk management
-
-#### Memgraph
-- Purpose: High-performance graph database
-- Requirements:
-  - Memgraph instance
-  - Authentication credentials
-- Features:
-  - Entity relationship storage
-  - Graph querying
-  - Semantic relationships
-  - Chunk summaries
-
-#### Neo4j (Optional)
-- Purpose: Alternative graph database
-- Requirements:
-  - Neo4j instance (Community or Enterprise)
-  - Database credentials
-  - Bolt protocol access
+  - Relationship storage
+  - Query capabilities
 
 ## Configuration Management
 
@@ -69,26 +51,25 @@ pip install -e .
 NOTION_API_TOKEN=your_notion_token
 OLLAMA_HOST=your_ollama_host
 
-# ChromaDB Settings
-CHROMA_AUTH_TOKEN=your_chroma_token
-CHROMA_HOST=your_chroma_host
-CHROMA_COLLECTION=notion
+# Pinecone Settings
+PINECONE_API_KEY=your_pinecone_api_key
+PINECONE_ENVIRONMENT=your_pinecone_environment
+PINECONE_INDEX=your_pinecone_index
+PINECONE_NAMESPACE=optional_namespace
 
-# Memgraph Settings
-MEMGRAPH_URI=bolt://localhost:7687
-MEMGRAPH_USER=your_username
-MEMGRAPH_PASSWORD=your_password
+# Optional Configuration Paths
+LOG_CONFIG_PATH=logging.yaml
+CONFIG_PATH=src/config/document_stores.yaml
 
-# Neo4j Settings (Optional)
-NEO4J_URI=your_neo4j_uri
-NEO4J_USER=your_neo4j_user
-NEO4J_PASSWORD=your_neo4j_password
-NEO4J_DATABASE=notion
+# LLM Model Provider
+MODEL_PROVIDER=ollama  # Options: ollama, gemini, groq
+GOOGLE_API_KEY=your_google_api_key  # For Gemini
+GROQ_API_KEY=your_groq_api_key  # For Groq
 ```
 
 ### YAML Configuration
 - Location: `src/config/document_stores.yaml`
-- Purpose: Store-specific settings and LLM configuration
+- Purpose: Store settings and LLM configuration
 - Features:
   - Environment variable interpolation
   - Store enablement flags
@@ -127,9 +108,7 @@ project_root/
 │   │   └── rate_limiter.py
 │   ├── storage/
 │   │   ├── base.py
-│   │   ├── chroma.py
-│   │   ├── memgraph.py
-│   │   ├── neo4j.py
+│   │   ├── pinecone.py
 │   │   └── store_manager.py
 │   ├── utils/
 │   │   ├── logging.py
@@ -149,7 +128,7 @@ project_root/
 ### Performance
 - Memory usage during chunking (400-1200 tokens per chunk)
 - Network latency for API calls
-- Database connection management
+- Pinecone request limits
 - LLM rate limiting:
   - Groq: 10 second delay
   - Gemini: 5 second delay
@@ -158,14 +137,13 @@ project_root/
 
 ### Security
 - API key management
-- Database credentials
 - Network security
 - Data privacy
 
 ### Scalability
 - Document size limits
 - Rate limiting (Notion API, LLM providers)
-- Database connection pooling
+- Pinecone request quotas
 - Concurrent processing limits
 
 ## Integration Points
@@ -185,35 +163,29 @@ project_root/
    - Model selection
    - Embeddings generation
 
-### Databases
-1. ChromaDB
-   - Collection management
+3. Pinecone API
    - Vector operations
-   - Document metadata
-   - Content hashing
-
-2. Graph Databases
-   - Schema constraints
-   - Relationship types
+   - Index management
+   - Metadata handling
    - Query optimization
-   - Chunk summaries
+   - Namespace management
 
 ## Development Workflow
 
 ### Setup Process
 1. Install dependencies
 2. Configure environment
-3. Initialize databases
+3. Initialize Pinecone index
 4. Verify connections
 
 ### Testing
 1. Unit tests
 2. Integration tests
-3. Database tests
+3. Vector store tests
 4. API mocking
 
 ### Deployment
 1. Environment setup
-2. Database initialization
+2. Pinecone index creation
 3. Configuration verification
 4. Service startup

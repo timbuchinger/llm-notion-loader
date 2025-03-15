@@ -5,7 +5,7 @@
 ### Implementation Status
 The project has a working implementation with:
 - Notion API integration
-- Multiple document store support
+- Pinecone document store
 - LLM-powered processing
 - Configuration management
 - Logging system
@@ -17,14 +17,13 @@ The project has a working implementation with:
    - ✅ Document chunking
    - ✅ Vector embeddings
    - ✅ Relationship extraction
-   - ✅ Multi-store support
+   - ✅ Single store support
 
-2. **Document Stores**
-   - ✅ ChromaDB integration
-   - ✅ Apache AGE integration
-   - ✅ Neo4j support
-   - ✅ Memgraph support
-   - Note: Newlines are preserved in the table format for Memgraph, but not visible in the graph view
+2. **Document Store**
+   - ✅ Pinecone integration
+   - ✅ Vector storage
+   - ✅ Metadata management
+   - ✅ Hash-based change detection
 
 3. **LLM Integration**
    - ✅ Ollama support
@@ -35,10 +34,11 @@ The project has a working implementation with:
 ## Recent Changes
 
 ### Latest Implementations
-1. Multi-database support
-   - Added Memgraph integration
-   - Enhanced store management
-   - Improved configuration
+1. Storage Simplification
+   - Removed graph database implementations
+   - Simplified store management
+   - Focused on Pinecone as single backend
+   - Streamlined configuration
 
 2. LLM Processing
    - Added multiple provider support
@@ -54,13 +54,13 @@ The project has a working implementation with:
 
 ### Architecture
 1. **Store Implementation**
-   - Using Strategy pattern for store implementations
-   - Common interface through BaseStore
-   - Flexible store selection
+   - Single store implementation using Pinecone
+   - Clean interface through DocumentStore base class
+   - Simplified store management
 
 2. **Processing Pipeline**
    - Sequential document processing
-   - Independent store updates
+   - Efficient store updates
    - Parallel processing considerations
 
 3. **Configuration**
@@ -107,9 +107,8 @@ The project has a working implementation with:
 ### Short Term
 1. Performance Optimization
    - [ ] Optimize chunking algorithm
-   - [ ] Improve database operations
+   - [ ] Improve Pinecone operations
    - [ ] Enhance caching
-   - [ ] Implement store-specific document updates
    - [ ] Add transactional safety to store operations
 
 2. Feature Enhancements
@@ -123,25 +122,17 @@ The project has a working implementation with:
    - [ ] Monitoring improvements
    - [ ] Backup mechanisms
    - [ ] Health checks
-   - [ ] Transaction safety mechanisms for stores
+   - [ ] Transaction safety mechanisms
    - [ ] Atomic update patterns
-
-### Development Infrastructure
-- Added GitHub Actions workflows
-  - CI workflow: Testing, linting, and type checking
-  - Release workflow: Automated versioning and releases
-  - Matrix testing across Python 3.10-3.12
 
 ### Long Term
 1. Architecture Evolution
    - [ ] Service decomposition
    - [ ] API development
    - [ ] UI considerations
-   - [ ] Store transaction safety
 
 2. Integration Expansion
    - [ ] Additional data sources
-   - [ ] More storage backends
    - [ ] External service hooks
 
 3. Developer Experience

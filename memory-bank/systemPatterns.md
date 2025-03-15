@@ -11,10 +11,7 @@ graph TD
     LLM --> Extractor[Relationship Extractor]
     
     Sync --> StoreManager[Store Manager]
-    
-    StoreManager --> ChromaDB[ChromaDB Store]
-    StoreManager --> Memgraph[Memgraph Store]
-    StoreManager --> Neo4j[Neo4j Store]
+    StoreManager --> Pinecone[Pinecone Store]
     
     Config[Configuration] --> Sync
     Config --> StoreManager
@@ -30,7 +27,7 @@ graph TD
 - Coordinates store updates
 - Tracks sync statistics
 
-### 2. Document Stores
+### 2. Document Store
 ```mermaid
 classDiagram
     class DocumentStore {
@@ -44,25 +41,13 @@ classDiagram
         +close()
     }
     
-    class ChromaStore {
+    class PineconeStore {
         +get_document_hash()
         +update_document()
         +get_document_metadata()
-        +clear_collection()
     }
     
-    class MemgraphStore {
-        +create_chunk_summary()
-        +_initialize_constraints()
-    }
-    
-    class Neo4jStore {
-        +initialize_indexes()
-    }
-    
-    DocumentStore <|-- ChromaStore
-    DocumentStore <|-- MemgraphStore
-    DocumentStore <|-- Neo4jStore
+    DocumentStore <|-- PineconeStore
 ```
 
 ### 3. LLM Integration
@@ -82,7 +67,7 @@ graph TD
 ## Design Patterns
 
 ### 1. Strategy Pattern
-- Document store implementations
+- Document store implementation
 - LLM provider selection
 - Rate limiter configuration
 
@@ -123,7 +108,7 @@ sequenceDiagram
         Sync->>Store: Clean Old Data
         Store-->>Sync: Cleanup Status
         
-        Sync->>Store: Update Stores
+        Sync->>Store: Update Store
         Store-->>Sync: Update Status
     end
 ```
@@ -131,10 +116,11 @@ sequenceDiagram
 ## Key Technical Decisions
 
 ### 1. Storage Implementation
-- ChromaDB for vector search and metadata
-- Memgraph for graph relationships
-- Neo4j as optional graph store
-- Modular store selection
+- Pinecone for vector storage and metadata
+- Vector search capabilities
+- Document metadata management
+- Hash-based change detection
+- Clean interface through DocumentStore base class
 
 ### 2. LLM Integration
 - Multiple provider support:
@@ -151,12 +137,12 @@ sequenceDiagram
   - Small chunk merging (<100 tokens)
   - Chunk summaries
 - Relationship extraction with validation
-- Vector embeddings via nomic-embed-text
+- Vector embeddings generation
 
 ### 3. Configuration Management
 - YAML-based configuration
 - Environment variable interpolation
-- Store enablement flags
+- Store configuration
 - Rate limit configuration
 - Model selection
 
@@ -172,14 +158,14 @@ sequenceDiagram
 ### Internal Components
 - Notion API client
 - LLM processors
-- Document stores
+- Document store
 - Configuration management
 
 ### External Dependencies
 - Notion API
 - LLM providers
 - Vector embeddings
-- Database systems
+- Pinecone service
 
 ## Performance Considerations
 
@@ -192,10 +178,9 @@ sequenceDiagram
 
 ### Scalability Factors
 1. Document size/count
-2. Relationship complexity
-3. Database performance
-4. Network latency
-5. Memory usage
+2. Pinecone API performance
+3. Network latency
+4. Memory usage
 
 ### Critical Paths
 1. Document Processing
@@ -207,7 +192,6 @@ sequenceDiagram
 2. Storage Operations
    - Data cleanup
    - Content updates
-   - Relationship creation
    - Metadata management
 
 3. Error Recovery

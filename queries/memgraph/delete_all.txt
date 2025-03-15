@@ -1,3 +1,0 @@
-# Delete all nodes and their relationships in the database
-MATCH (n)
-DETACH DELETE n
