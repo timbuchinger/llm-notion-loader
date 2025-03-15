@@ -1,26 +1,27 @@
 from setuptools import find_packages, setup
 
 setup(
-    name="notion-age-sync",
+    name="llm-notion-loader",
     version="0.1.0",
-    packages=find_packages(),
+    description="A tool for synchronizing Notion pages to vector databases with LLM-powered features",
+    author="",
+    packages=find_packages(where="src"),
     package_dir={"": "src"},
     install_requires=[
-        "apache-age-python",
-        "chromadb",
-        "langchain-chroma",
+        "pinecone-client",
+        "python-dotenv",
+        "requests",
+        "pyyaml",
+        "tiktoken",
         "langchain-core",
         "langchain-google-genai",
         "langchain-groq",
         "langchain-ollama",
-        "psycopg2-binary",
-        "python-dotenv",
-        "requests",
-        "tiktoken",
     ],
     entry_points={
         "console_scripts": [
-            "notion-sync=main:main",
+            "notion-sync=src.main:main",
         ],
     },
+    python_requires=">=3.8",
 )

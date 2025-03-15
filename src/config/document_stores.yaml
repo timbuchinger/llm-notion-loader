@@ -10,7 +10,7 @@ model:
   models:
     ollama: "mistral:7b"
     gemini: "gemini-2.0-flash"
-    groq: "qwen-2.5-32b"
+    groq: "qwen-2.5-32b" # deepseek-r1-distill-llama-70b ???
 
 document_stores:
   pinecone:

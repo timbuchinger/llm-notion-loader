@@ -17,20 +17,7 @@ class Config:
     # Default environment variables
     REQUIRED_ENV_VARS: Dict[str, str] = {
         "NOTION_API_TOKEN": os.environ.get("NOTION_API_TOKEN"),
-        "CHROMA_AUTH_TOKEN": os.environ.get("CHROMA_AUTH_TOKEN"),
-        "CHROMA_HOST": os.environ.get("CHROMA_HOST"),
-        "CHROMA_COLLECTION": os.environ.get("CHROMA_COLLECTION", "notion"),
         "OLLAMA_HOST": os.environ.get("OLLAMA_HOST"),
-        "AGE_HOST": os.environ.get("AGE_HOST", "localhost"),
-        "AGE_PORT": os.environ.get("AGE_PORT", "5432"),
-        "AGE_DATABASE": os.environ.get("AGE_DATABASE", "notion"),
-        "AGE_USER": os.environ.get("AGE_USER", "postgres"),
-        "AGE_PASSWORD": os.environ.get("AGE_PASSWORD"),
-        # Neo4j environment variables (optional)
-        "NEO4J_URI": os.environ.get("NEO4J_URI"),
-        "NEO4J_USER": os.environ.get("NEO4J_USER"),
-        "NEO4J_PASSWORD": os.environ.get("NEO4J_PASSWORD"),
-        "NEO4J_DATABASE": os.environ.get("NEO4J_DATABASE", "notion"),
     }
 
     _config_cache: Optional[Dict[str, Any]] = None
@@ -147,14 +134,10 @@ class Config:
         """Get environment variable value."""
         return cls.REQUIRED_ENV_VARS[key]
 
-    # Convenience properties for commonly used values
+    # Convenience property for commonly used value
     @property
     def notion_token(self) -> str:
         return self.get_env("NOTION_API_TOKEN")
-
-    @property
-    def chroma_collection(self) -> str:
-        return self.get_env("CHROMA_COLLECTION")
 
 
 def load_config() -> Dict[str, Any]:
