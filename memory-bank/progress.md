@@ -25,12 +25,13 @@
 
 ### LLM Processing
 - [x] Multiple LLM providers
-  - Ollama integration
-  - Gemini support
-  - Groq support
+  - Ollama integration (no delay)
+  - Gemini support (5s delay)
+  - Groq support (10s delay)
 - [x] Rate limiting system
   - Provider-specific delays
-  - Request management
+  - Request throttling
+  - Connection management
 - [x] Semantic chunking
   - Smart chunk creation
   - Size validation
@@ -65,10 +66,10 @@
 - [ ] Query interface improvements
 
 ### Infrastructure
-- [ ] Unit test coverage
-- [ ] Integration tests
-- [ ] CI/CD pipeline
-- [ ] Documentation updates
+- [x] GitHub CI workflow for automated testing
+- [x] GitHub Release workflow for versioning
+- [ ] Remaining test coverage
+- [x] Initial documentation
 
 ## Known Issues 🐛
 

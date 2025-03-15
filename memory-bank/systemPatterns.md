@@ -53,8 +53,15 @@ classDiagram
 ### 3. LLM Integration
 ```mermaid
 graph TD
-    Provider[LLM Provider] --> RateLimiter[Rate Limiter]
-    RateLimiter --> Operations[LLM Operations]
+    Providers[LLM Providers] --> OL[Ollama]
+    Providers --> GM[Gemini]
+    Providers --> GQ[Groq]
+    
+    OL --> RL[Rate Limiter]
+    GM --> RL
+    GQ --> RL
+    
+    RL --> Operations[LLM Operations]
     
     Operations --> Chunking[Semantic Chunking]
     Operations --> Relationships[Relationship Extraction]
@@ -62,6 +69,13 @@ graph TD
     
     Chunking --> Summary[Chunk Summaries]
     Relationships --> Entities[Entity Relations]
+    Embeddings --> VE[nomic-embed-text]
+
+    subgraph Rate Limits
+        GQ_RL[Groq: 10s]
+        GM_RL[Gemini: 5s]
+        OL_RL[Ollama: 0s]
+    end
 ```
 
 ## Design Patterns

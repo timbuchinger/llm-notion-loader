@@ -27,9 +27,12 @@ The project has a working implementation with:
 
 3. **LLM Integration**
    - ✅ Ollama support
+   - ✅ Gemini support
+   - ✅ Groq support
+   - ✅ Provider-specific rate limiting
    - ✅ Semantic chunking
    - ✅ Relationship extraction
-   - ✅ Vector embeddings
+   - ✅ Vector embeddings via nomic-embed-text
 
 ## Recent Changes
 
@@ -112,7 +115,7 @@ The project has a working implementation with:
    - [ ] Add transactional safety to store operations
 
 2. Feature Enhancements
-   - [ ] Additional LLM providers
+   - [✓] Multiple LLM provider support
    - [ ] Advanced relationship types
    - [ ] Batch processing
 

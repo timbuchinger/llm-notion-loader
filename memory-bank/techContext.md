@@ -22,6 +22,7 @@ pip install -e .
 - `pinecone`: Pinecone client
 - `langchain`: LLM framework and abstractions
 - `langchain-ollama`: Ollama integration
+- `nomic-embed-text`: Vector embeddings generation
 - `tiktoken`: Token counting library
 - `pyyaml`: YAML configuration parsing
 - `python-dotenv`: Environment variable management
@@ -63,6 +64,12 @@ CONFIG_PATH=src/config/document_stores.yaml
 
 # LLM Model Provider
 MODEL_PROVIDER=ollama  # Options: ollama, gemini, groq
+
+# Provider Specific Settings
+# Rate Limiting
+GROQ_RATE_LIMIT=10  # seconds delay
+GEMINI_RATE_LIMIT=5  # seconds delay
+OLLAMA_RATE_LIMIT=0  # no delay
 GOOGLE_API_KEY=your_google_api_key  # For Gemini
 GROQ_API_KEY=your_groq_api_key  # For Groq
 ```
