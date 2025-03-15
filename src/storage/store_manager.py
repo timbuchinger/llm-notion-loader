@@ -98,6 +98,15 @@ class StoreManager:
             except Exception as e:
                 logger.error(f"Failed to initialize Apache AGE store: {str(e)}")
 
+        if store_configs.get("pinecone", {}).get("enabled", False):
+            try:
+                from .pinecone import PineconeStore
+
+                self.stores["pinecone"] = PineconeStore(config=self.config)
+                logger.info("Initialized Pinecone store")
+            except Exception as e:
+                logger.error(f"Failed to initialize Pinecone store: {str(e)}")
+
     def clean_document(self, notion_id: str) -> None:
         """Remove document from all stores.
 
@@ -110,30 +119,6 @@ class StoreManager:
                 logger.info(f"Cleaned document {notion_id} from {store_name}")
             except Exception as e:
                 logger.error(f"Failed to clean document from {store_name}: {str(e)}")
-
-    def create_note(
-        self,
-        notion_id: str,
-        title: str,
-        content: str,
-        embedding: List[float],
-        last_modified: str,
-    ) -> None:
-        """Create note in all stores.
-
-        Args:
-            notion_id: Notion page ID
-            title: Note title
-            content: Note content
-            embedding: Vector embedding
-            last_modified: Last modification timestamp
-        """
-        for store_name, store in self.stores.items():
-            try:
-                store.create_note(notion_id, title, content, embedding, last_modified)
-                logger.info(f"Created note {notion_id} in {store_name}")
-            except Exception as e:
-                logger.error(f"Failed to create note in {store_name}: {str(e)}")
 
     def create_chunks(self, notion_id: str, chunks: List[Dict]) -> None:
         """Create chunks in all stores.
@@ -169,10 +154,15 @@ class StoreManager:
                         # For raw text chunks, wrap in dict
                         processed_chunks.append({"text": str(chunk)})
 
-                if store.__class__.__name__ == "ChromaStore":
-                    # For vector stores, we just need the text content
-                    text_chunks = [chunk["text"] for chunk in processed_chunks]
-                    store.create_chunks(notion_id, text_chunks)
+                if store.__class__.__name__ in ["ChromaStore", "PineconeStore"]:
+                    # For vector stores, we need the appropriate format
+                    if store.__class__.__name__ == "ChromaStore":
+                        # ChromaStore only needs text content
+                        text_chunks = [chunk["text"] for chunk in processed_chunks]
+                        store.create_chunks(notion_id, text_chunks)
+                    else:
+                        # PineconeStore needs full chunk dictionaries
+                        store.create_chunks(notion_id, processed_chunks)
                 else:
                     # For graph stores, pass all metadata
                     store.create_chunks(notion_id, processed_chunks)
@@ -183,7 +173,7 @@ class StoreManager:
     def create_relationships(
         self, notion_id: str, relationships: List[Dict[str, str]], timestamp: str
     ) -> None:
-        """Create relationships in all stores.
+        """Create relationships in stores that support them.
 
         Args:
             notion_id: Parent note ID
@@ -191,6 +181,11 @@ class StoreManager:
             timestamp: When the relationships were created
         """
         for store_name, store in self.stores.items():
+            # Skip stores that don't support relationships
+            store_config = self.config.get("document_stores", {}).get(store_name, {})
+            if not store_config.get("supports_relationships", False):
+                continue
+
             try:
                 store.create_relationships(notion_id, relationships, timestamp)
                 logger.info(f"Created relationships for {notion_id} in {store_name}")

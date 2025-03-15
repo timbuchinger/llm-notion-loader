@@ -262,6 +262,23 @@ The export format includes:
   - Chunk summary (if available)
   - Token count (if available)
 
+### Delete Pinecone Namespace
+Delete documents from a Pinecone namespace:
+
+```bash
+# Delete all documents in namespace
+./scripts/delete_pinecone_namespace.py
+
+# Delete specific document by Notion ID
+./scripts/delete_pinecone_namespace.py --notion-id your-notion-id
+
+# Delete from specific namespace
+./scripts/delete_pinecone_namespace.py --namespace your-namespace
+
+# Skip confirmation prompt
+./scripts/delete_pinecone_namespace.py --force
+```
+
 ### Export Entities and Relationships
 Export all entities and their relationships from the graph store to CSV files:
 

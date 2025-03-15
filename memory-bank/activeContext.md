@@ -109,6 +109,8 @@ The project has a working implementation with:
    - [ ] Optimize chunking algorithm
    - [ ] Improve database operations
    - [ ] Enhance caching
+   - [ ] Implement store-specific document updates
+   - [ ] Add transactional safety to store operations
 
 2. Feature Enhancements
    - [ ] Additional LLM providers
@@ -116,15 +118,26 @@ The project has a working implementation with:
    - [ ] Batch processing
 
 3. Infrastructure
+   - [✓] GitHub CI workflow for automated testing
+   - [✓] GitHub Release workflow for versioning
    - [ ] Monitoring improvements
    - [ ] Backup mechanisms
    - [ ] Health checks
+   - [ ] Transaction safety mechanisms for stores
+   - [ ] Atomic update patterns
+
+### Development Infrastructure
+- Added GitHub Actions workflows
+  - CI workflow: Testing, linting, and type checking
+  - Release workflow: Automated versioning and releases
+  - Matrix testing across Python 3.10-3.12
 
 ### Long Term
 1. Architecture Evolution
    - [ ] Service decomposition
    - [ ] API development
    - [ ] UI considerations
+   - [ ] Store transaction safety
 
 2. Integration Expansion
    - [ ] Additional data sources
@@ -142,6 +155,8 @@ The project has a working implementation with:
 1. Performance optimization
 2. Error handling improvements
 3. Documentation updates
+4. Store-specific update logic
+5. Transaction safety in store operations
 
 ### Medium Priority
 1. Additional LLM providers

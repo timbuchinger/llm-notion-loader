@@ -1,5 +1,5 @@
 import logging
-from typing import Dict, List, Optional, Set
+from typing import Dict, Iterator, List, Optional, Set
 
 import psycopg2
 from age import Age
@@ -85,10 +85,9 @@ class AgeStore(DocumentStore):
                 # Delete from vector tables first due to foreign key constraints
                 cur.execute(
                     """
-                    DELETE FROM note_embeddings WHERE notion_id = %s;
                     DELETE FROM chunk_embeddings WHERE chunk_id LIKE %s;
                 """,
-                    (notion_id, f"{notion_id}-chunk-%"),
+                    (f"{notion_id}-chunk-%",),
                 )
 
                 # Delete graph nodes and relationships
@@ -120,60 +119,8 @@ class AgeStore(DocumentStore):
                 logger.error(f"Error cleaning document: {str(e)}")
                 raise
 
-    def create_note(
-        self,
-        notion_id: str,
-        title: str,
-        content: str,
-        embedding: List[float],
-        last_modified: str,
-    ) -> None:
-        """Create a new note node with vector embedding.
-
-        Args:
-            notion_id: Notion page ID
-            title: Note title
-            content: Note content
-            embedding: Vector embedding of content
-            last_modified: Last modification timestamp
-        """
-        with self.conn.cursor() as cur:
-            try:
-                # Create note node
-                # Escape single quotes in title and content
-                safe_title = title.replace("'", "\\'")
-                safe_content = content.replace("'", "\\'")
-
-                cypher_query = f"""
-                    SELECT * FROM cypher('{self.graph_name}', $$
-                        CREATE (n:Note {{
-                            id: '{notion_id}',
-                            title: '{safe_title}',
-                            content: '{safe_content}',
-                            last_modified: '{last_modified}'
-                        }})
-                        RETURN n
-                    $$) as (node agtype)
-                """
-                self._execute_cypher(cur, cypher_query)
-
-                # Store embedding
-                cur.execute(
-                    """
-                    INSERT INTO note_embeddings (notion_id, embedding)
-                    VALUES (%s, %s)
-                """,
-                    (notion_id, embedding),
-                )
-
-                self.conn.commit()
-            except Exception as e:
-                self.conn.rollback()
-                logger.error(f"Error creating note: {str(e)}")
-                raise
-
     def create_chunks(self, notion_id: str, chunks: List[Dict]) -> None:
-        """Create note chunk nodes and relationships.
+        """Create note chunks with consistent metadata.
 
         Args:
             notion_id: Parent note ID
@@ -181,14 +128,26 @@ class AgeStore(DocumentStore):
         """
         with self.conn.cursor() as cur:
             try:
+                # Create note node first
+                cypher_query = f"""
+                    SELECT * FROM cypher('{self.graph_name}', $$
+                        MERGE (n:Note {{id: '{notion_id}'}})
+                        RETURN n
+                    $$) as (node agtype)
+                """
+                self._execute_cypher(cur, cypher_query)
+
                 previous_chunk_id = None
 
                 for i, chunk in enumerate(chunks):
                     chunk_id = f"{notion_id}-chunk-{i}"
+                    chunk_text = chunk["text"]
+                    metadata = chunk.get("metadata", {})
 
-                    # Create chunk node with all metadata
-                    # Escape single quotes in content
-                    safe_content = chunk.get("text", "").replace("'", "\\'")
+                    # Create chunk node with consistent metadata
+                    # Escape single quotes in content and title
+                    safe_content = chunk_text.replace("'", "\\'")
+                    safe_title = metadata.get("title", "").replace("'", "\\'")
 
                     cypher_query = f"""
                         SELECT * FROM cypher('{self.graph_name}', $$
@@ -197,17 +156,20 @@ class AgeStore(DocumentStore):
                                 id: '{chunk_id}',
                                 content: '{safe_content}',
                                 parentNote: '{notion_id}',
-                                chunkNumber: {i},
-                                token_count: {chunk.get('token_count')},
-                                chunking_model: '{chunk.get('chunking_model', '')}',
-                                chunking_provider: '{chunk.get('chunking_provider', '')}',
-                                summary: '{chunk.get('summary', '')}',
-                                summary_model: '{chunk.get('summary_model', '')}',
-                                summary_provider: '{chunk.get('summary_provider', '')}',
-                                embedding: {Json(chunk.get('embedding'))} if '{chunk.get('embedding')}' != 'None' else null,
-                                embedding_model: '{chunk.get('embedding_model', '')}',
-                                embedding_provider: '{chunk.get('embedding_provider', '')}'
+                                title: '{safe_title}',
+                                chunk_number: {i},
+                                total_chunks: {len(chunks)},
+                                token_count: {metadata.get('token_count', 'null')},
+                                chunking_model: '{metadata.get('chunking_model', '')}',
+                                chunking_provider: '{metadata.get('chunking_provider', '')}',
+                                summary: '{metadata.get('summary', '')}',
+                                summary_model: '{metadata.get('summary_model', '')}',
+                                summary_provider: '{metadata.get('summary_provider', '')}',
+                                embedding_model: '{metadata.get('embedding_model', '')}',
+                                embedding_provider: '{metadata.get('embedding_provider', '')}',
+                                last_modified: '{metadata.get('last_modified', '')}'
                             }})
+                            SET c.embedding = {Json(metadata.get('embedding', []))}
                             CREATE (n)-[:HAS_CHUNK]->(c)
                             RETURN c
                         $$) as (node agtype)
@@ -242,7 +204,7 @@ class AgeStore(DocumentStore):
         Args:
             notion_id: Parent note ID
             relationships: List of relationship dictionaries
-            timestamp: When the relationships were created
+            timestamp: When relationships were created
         """
         with self.conn.cursor() as cur:
             try:
@@ -270,7 +232,6 @@ class AgeStore(DocumentStore):
                         # Create/match entities and relationship with source reference
                         cypher_query = f"""
                             SELECT * FROM cypher('{self.graph_name}', $$
-                                MATCH (n:Note {{id: '{notion_id}'}})
                                 MERGE (s:Entity {{name: '{subject}'}})
                                 MERGE (o:Entity {{name: '{obj}'}})
 
@@ -331,6 +292,101 @@ class AgeStore(DocumentStore):
                 self.conn.rollback()
                 logger.error(f"Error adding entity reference: {str(e)}")
                 raise
+
+    def get_documents(self, notion_id: Optional[str] = None) -> Iterator[Dict]:
+        """Get all documents or a specific document.
+
+        Args:
+            notion_id: Optional Notion page ID to retrieve specific document
+
+        Returns:
+            Iterator of document dictionaries
+        """
+        with self.conn.cursor() as cur:
+            cypher_query = f"""
+                SELECT * FROM cypher('{self.graph_name}', $$
+                    MATCH (c:NoteChunk)
+                    WHERE c.chunk_number = 0
+                    {f"AND c.parentNote = '{notion_id}'" if notion_id else ""}
+                    RETURN DISTINCT c.parentNote as notion_id, c.title as title, c.content as content
+                $$) as (notion_id agtype, title agtype, content agtype)
+            """
+            try:
+                result = self._execute_cypher(cur, cypher_query)
+                for row in result:
+                    yield {
+                        "notion_id": row["notion_id"],
+                        "title": row["title"],
+                        "content": row["content"],
+                    }
+            except Exception as e:
+                logger.error(f"Error getting documents: {str(e)}")
+                raise
+
+    def get_chunks(self, notion_id: str) -> List[Dict]:
+        """Get all chunks for a document.
+
+        Args:
+            notion_id: Parent note ID
+
+        Returns:
+            List of chunk dictionaries with metadata
+        """
+        with self.conn.cursor() as cur:
+            cypher_query = f"""
+                SELECT * FROM cypher('{self.graph_name}', $$
+                    MATCH (n:Note {{id: '{notion_id}'}})-[:HAS_CHUNK]->(c:NoteChunk)
+                    RETURN
+                        c.content as content,
+                        c.chunk_number as chunk_number,
+                        c.total_chunks as total_chunks,
+                        c.summary as summary,
+                        c.token_count as token_count,
+                        c.chunking_model as chunking_model,
+                        c.chunking_provider as chunking_provider
+                    ORDER BY c.chunk_number
+                $$) as (content agtype, chunk_number agtype, total_chunks agtype, summary agtype, token_count agtype, chunking_model agtype, chunking_provider agtype)
+            """
+            try:
+                result = self._execute_cypher(cur, cypher_query)
+                return [
+                    {
+                        "content": row["content"],
+                        "chunk_number": row["chunk_number"],
+                        "total_chunks": row["total_chunks"],
+                        "summary": row["summary"],
+                        "token_count": row["token_count"],
+                        "chunking_model": row["chunking_model"],
+                        "chunking_provider": row["chunking_provider"],
+                    }
+                    for row in result
+                ]
+            except Exception as e:
+                logger.error(f"Error getting chunks: {str(e)}")
+                raise
+
+    def get_note_hash(self, notion_id: str) -> Optional[str]:
+        """Get the stored hash for a note.
+
+        Args:
+            notion_id: Note ID
+
+        Returns:
+            Stored hash if found, None otherwise
+        """
+        with self.conn.cursor() as cur:
+            try:
+                cypher_query = f"""
+                    SELECT * FROM cypher('{self.graph_name}', $$
+                        MATCH (c:NoteChunk {{parentNote: '{notion_id}', chunk_number: 0}})
+                        RETURN c.hash as hash
+                    $$) as (hash agtype)
+                """
+                result = self._execute_cypher(cur, cypher_query)
+                return result[0]["hash"] if result else None
+            except Exception as e:
+                logger.error(f"Error getting note hash: {str(e)}")
+                return None
 
     def remove_note_references(self, notion_id: str) -> Set[str]:
         """Remove all references from a note and return orphaned entities.
@@ -395,55 +451,6 @@ class AgeStore(DocumentStore):
             except Exception as e:
                 self.conn.rollback()
                 logger.error(f"Error deleting entities: {str(e)}")
-                raise
-
-    def get_note_hash(self, notion_id: str) -> Optional[str]:
-        """Get the stored hash for a note.
-
-        Args:
-            notion_id: Note ID
-
-        Returns:
-            Stored hash if found, None otherwise
-        """
-        with self.conn.cursor() as cur:
-            cypher_query = f"""
-                SELECT * FROM cypher('{self.graph_name}', $$
-                    MATCH (n:Note {{id: '{notion_id}'}})
-                    RETURN n.hash as hash
-                $$) as (hash agtype)
-            """
-            result = self._execute_cypher(cur, cypher_query)
-            return result[0]["hash"] if result else None
-
-    def create_chunk_summary(
-        self, notion_id: str, chunk_number: int, summary: str
-    ) -> None:
-        """Update a chunk node with its summary.
-
-        Args:
-            notion_id: Parent note ID
-            chunk_number: Index of the chunk
-            summary: Summary text for the chunk
-        """
-        chunk_id = f"{notion_id}-chunk-{chunk_number}"
-        with self.conn.cursor() as cur:
-            try:
-                # Escape single quotes in summary
-                safe_summary = summary.replace("'", "\\'")
-
-                cypher_query = f"""
-                    SELECT * FROM cypher('{self.graph_name}', $$
-                        MATCH (c:NoteChunk {{id: '{chunk_id}'}})
-                        SET c.summary = '{safe_summary}'
-                        RETURN c
-                    $$) as (node agtype)
-                """
-                self._execute_cypher(cur, cypher_query)
-                self.conn.commit()
-            except Exception as e:
-                self.conn.rollback()
-                logger.error(f"Error creating chunk summary: {str(e)}")
                 raise
 
     def close(self) -> None:

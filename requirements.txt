@@ -7,3 +7,4 @@ langchain-groq
 PyYAML
 tiktoken
 neo4j
+pinecone>=6.0.1

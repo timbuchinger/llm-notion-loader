@@ -15,42 +15,27 @@ class DocumentStore(ABC):
         pass
 
     @abstractmethod
-    def create_note(
-        self,
-        notion_id: str,
-        title: str,
-        content: str,
-        embedding: List[float],
-        last_modified: str,
-    ) -> None:
-        """Create a new note.
-
-        Args:
-            notion_id: Notion page ID
-            title: Note title
-            content: Note content
-            embedding: Vector embedding of content
-            last_modified: Last modification timestamp
-        """
-        pass
-
-    @abstractmethod
     def create_chunks(self, notion_id: str, chunks: List[Dict]) -> None:
-        """Create note chunks and relationships.
+        """Create note chunks with consistent metadata.
 
         Args:
             notion_id: Parent note ID
             chunks: List of chunk dictionaries containing:
                 - text: Chunk text content
-                - token_count: Number of tokens in chunk
-                - chunking_model: Model used for semantic chunking
-                - chunking_provider: Provider used for chunking
-                - summary: Optional chunk summary
-                - summary_model: Optional model used for summary
-                - summary_provider: Optional provider used for summary
-                - embedding: Optional vector embedding
-                - embedding_model: Optional model used for embedding
-                - embedding_provider: Optional provider used for embedding
+                - metadata: Dictionary containing:
+                    - title: Document title
+                    - last_modified: Last modification timestamp
+                    - chunk_number: Position in document (0-based)
+                    - total_chunks: Total number of chunks in document
+                    - token_count: Number of tokens in chunk
+                    - chunking_model: Model used for semantic chunking
+                    - chunking_provider: Provider used for chunking
+                    - summary: Optional chunk summary
+                    - summary_model: Optional model used for summary
+                    - summary_provider: Optional provider used for summary
+                    - embedding: Vector embedding
+                    - embedding_model: Optional model used for embedding
+                    - embedding_provider: Optional provider used for embedding
         """
         pass
 
@@ -131,6 +116,7 @@ class DocumentStore(ABC):
         Returns:
             List of chunk dictionaries containing:
                 - content: Formatted chunk text content with summary prefix if available
+                - chunk_number: Position in document (0-based)
                 - summary: Optional chunk summary
                 - token_count: Optional token count
         """

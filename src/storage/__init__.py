@@ -1,3 +1,5 @@
 """Storage integration module for document stores."""
 
-__all__ = []
+from .pinecone import PineconeStore
+
+__all__ = ["PineconeStore"]

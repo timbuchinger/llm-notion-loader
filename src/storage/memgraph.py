@@ -44,7 +44,11 @@ class MemgraphStore(DocumentStore):
                 raise
 
     def clean_document(self, notion_id: str) -> None:
-        """Remove all nodes and relationships for a document."""
+        """Remove all nodes and relationships for a document.
+
+        Args:
+            notion_id: Notion page ID
+        """
         with self.driver.session() as session:
             # First delete note and direct relationships
             session.run(
@@ -66,41 +70,13 @@ class MemgraphStore(DocumentStore):
                 f"Cleaned document {notion_id} and its relationships from Memgraph"
             )
 
-    def create_note(
-        self,
-        notion_id: str,
-        title: str,
-        content: str,
-        embedding: List[float],
-        last_modified: str,
-    ) -> None:
-        """Create a new note node."""
-        # Debug log content before storage
-        logger.debug("Memgraph pre-storage content for %s:\n%s", notion_id, content)
-        logger.debug("Memgraph content newlines count: %d", content.count("\n"))
-        logger.debug(f"Note embedding size: {len(embedding)}")
-
-        with self.driver.session() as session:
-            session.run(
-                """
-                CREATE (n:Note {
-                    id: $notion_id,
-                    title: $title,
-                    content: $content,
-                    embedding: $embedding,
-                    last_modified: $last_modified
-                })
-                """,
-                notion_id=notion_id,
-                title=title,
-                content=content,
-                embedding=embedding,
-                last_modified=last_modified,
-            )
-            logger.info(f"Created note {notion_id} in Memgraph")
-
     def create_chunks(self, notion_id: str, chunks: List[Dict]) -> None:
-        """Create note chunk nodes and relationships."""
+        """Create note chunks with consistent metadata.
+
+        Args:
+            notion_id: Parent note ID
+            chunks: List of chunk dictionaries with metadata
+        """
         logger.info(f"Creating chunks for note {notion_id}")
         logger.info(f"Total chunks to process: {len(chunks)}")
 
@@ -109,22 +85,22 @@ class MemgraphStore(DocumentStore):
 
             for i, chunk in enumerate(chunks):
                 chunk_id = f"{notion_id}-chunk-{i}"
+                chunk_text = chunk["text"]
+                metadata = chunk.get("metadata", {})
 
                 # Log chunk data for debugging
                 logger.info(f"Processing chunk {i} for note {notion_id}")
                 logger.info(f"Available chunk data: {chunk.keys()}")
-                if "text" in chunk:
-                    logger.info(f"Chunk text length: {len(chunk['text'])}")
-                if "embedding" in chunk:
-                    logger.info(f"Chunk embedding size: {len(chunk['embedding'])}")
-                    if not isinstance(chunk["embedding"], list):
+                if "embedding" in metadata:
+                    logger.info(f"Chunk embedding size: {len(metadata['embedding'])}")
+                    if not isinstance(metadata["embedding"], list):
                         logger.error(
-                            f"Embedding is not a list: {type(chunk['embedding'])}"
+                            f"Embedding is not a list: {type(metadata['embedding'])}"
                         )
                 else:
                     logger.warning(f"No embedding found for chunk {i}")
 
-                # Create chunk node with all metadata
+                # Create chunk node with consistent metadata
                 session.run(
                     """
                     MATCH (n:Note {id: $notion_id})
@@ -132,7 +108,9 @@ class MemgraphStore(DocumentStore):
                         id: $chunk_id,
                         content: $content,
                         parentNote: $notion_id,
-                        chunkNumber: $chunk_number,
+                        title: $title,
+                        chunk_number: $chunk_number,
+                        total_chunks: $total_chunks,
                         token_count: $token_count,
                         chunking_model: $chunking_model,
                         chunking_provider: $chunking_provider,
@@ -140,7 +118,8 @@ class MemgraphStore(DocumentStore):
                         summary_model: $summary_model,
                         summary_provider: $summary_provider,
                         embedding_model: $embedding_model,
-                        embedding_provider: $embedding_provider
+                        embedding_provider: $embedding_provider,
+                        last_modified: $last_modified
                     })
                     SET c.embedding = $embedding
                     CREATE (n)-[:HAS_CHUNK]->(c)
@@ -148,20 +127,23 @@ class MemgraphStore(DocumentStore):
                     notion_id=notion_id,
                     chunk_id=chunk_id,
                     content=(
-                        f"Summary: {chunk.get('summary', '')}\n\n{chunk.get('text', '')}"
-                        if chunk.get("summary")
-                        else chunk.get("text", "")
+                        f"Summary: {metadata.get('summary', '')}\n\n{chunk_text}"
+                        if metadata.get("summary")
+                        else chunk_text
                     ),
+                    title=metadata.get("title", ""),
                     chunk_number=i,
-                    token_count=chunk.get("token_count"),
-                    chunking_model=chunk.get("chunking_model"),
-                    chunking_provider=chunk.get("chunking_provider"),
-                    summary=chunk.get("summary"),
-                    summary_model=chunk.get("summary_model"),
-                    summary_provider=chunk.get("summary_provider"),
-                    embedding=chunk.get("embedding"),
-                    embedding_model=chunk.get("embedding_model"),
-                    embedding_provider=chunk.get("embedding_provider"),
+                    total_chunks=len(chunks),
+                    token_count=metadata.get("token_count"),
+                    chunking_model=metadata.get("chunking_model"),
+                    chunking_provider=metadata.get("chunking_provider"),
+                    summary=metadata.get("summary"),
+                    summary_model=metadata.get("summary_model"),
+                    summary_provider=metadata.get("summary_provider"),
+                    embedding=metadata.get("embedding", []),
+                    embedding_model=metadata.get("embedding_model"),
+                    embedding_provider=metadata.get("embedding_provider"),
+                    last_modified=metadata.get("last_modified"),
                 )
 
                 # Create NEXT_CHUNK relationship if not the first chunk
@@ -185,7 +167,13 @@ class MemgraphStore(DocumentStore):
     def create_relationships(
         self, notion_id: str, relationships: List[Dict[str, str]], timestamp: str
     ) -> None:
-        """Create entity nodes and relationships."""
+        """Create entity nodes and relationships.
+
+        Args:
+            notion_id: Parent note ID
+            relationships: List of relationship dictionaries
+            timestamp: Timestamp when relationships were created
+        """
         with self.driver.session() as session:
             relationship_count = 0
             for rel in relationships:
@@ -261,41 +249,44 @@ class MemgraphStore(DocumentStore):
         with self.driver.session() as session:
             result = session.run(
                 """
-                MATCH (n:Note {id: $notion_id})
-                RETURN n.last_modified as last_modified
+                MATCH (c:NoteChunk {parentNote: $notion_id})
+                RETURN c.last_modified as last_modified
+                LIMIT 1
                 """,
                 notion_id=notion_id,
             ).single()
             return result["last_modified"] if result else None
 
     def get_documents(self, notion_id: Optional[str] = None) -> Iterator[Dict]:
-        """Get all documents or a specific document."""
-        with self.driver.session() as session:
-            if notion_id:
-                query = """
-                MATCH (n:Note {id: $notion_id})
-                RETURN n.id as notion_id, n.title as title, n.content as content
-                """
-                params = {"notion_id": notion_id}
-            else:
-                query = """
-                MATCH (n:Note)
-                RETURN n.id as notion_id, n.title as title, n.content as content
-                """
-                params = {}
+        """Get all documents or a specific document.
 
+        Args:
+            notion_id: Optional Notion page ID to retrieve specific document
+
+        Returns:
+            Iterator of document dictionaries
+        """
+        with self.driver.session() as session:
+            query = """
+            MATCH (c:NoteChunk)
+            WHERE c.chunk_number = 0
+            {}
+            RETURN DISTINCT c.parentNote as notion_id, c.title as title, c.content as content
+            """.format(
+                "AND c.parentNote = $notion_id" if notion_id else ""
+            )
+
+            params = {"notion_id": notion_id} if notion_id else {}
             result = session.run(query, params)
+
             for record in result:
                 content = record["content"]
-                # Log retrieved content
                 logger.debug(
                     "Memgraph retrieved content for %s:\n%s",
                     record["notion_id"],
                     content,
                 )
-                logger.debug(
-                    "Memgraph retrieved content newlines count: %d", content.count("\n")
-                )
+                logger.debug("Memgraph content newlines count: %d", content.count("\n"))
 
                 yield {
                     "notion_id": record["notion_id"],
@@ -303,45 +294,41 @@ class MemgraphStore(DocumentStore):
                     "content": content,
                 }
 
-    def create_chunk_summary(
-        self, notion_id: str, chunk_number: int, summary: str
-    ) -> None:
-        """Create or update a summary for a chunk."""
-        with self.driver.session() as session:
-            session.run(
-                """
-                MATCH (n:Note {id: $notion_id})-[:HAS_CHUNK]->(c:NoteChunk)
-                WHERE c.chunkNumber = $chunk_number
-                SET c.summary = $summary,
-                    c.content = CASE
-                        WHEN $summary IS NOT NULL THEN "Summary: " + $summary + "\n\n" + c.content
-                        ELSE c.content
-                    END
-                """,
-                notion_id=notion_id,
-                chunk_number=chunk_number,
-                summary=summary,
-            )
-
     def get_chunks(self, notion_id: str) -> List[Dict]:
-        """Get all chunks for a document."""
+        """Get all chunks for a document.
+
+        Args:
+            notion_id: Parent note ID
+
+        Returns:
+            List of chunk dictionaries with metadata
+        """
         with self.driver.session() as session:
             result = session.run(
                 """
                 MATCH (n:Note {id: $notion_id})-[:HAS_CHUNK]->(c:NoteChunk)
-                RETURN c.content as content, c.summary as summary, c.chunkNumber as chunk_number
-                ORDER BY c.chunkNumber
+                RETURN
+                    c.content as content,
+                    c.chunk_number as chunk_number,
+                    c.total_chunks as total_chunks,
+                    c.summary as summary,
+                    c.token_count as token_count,
+                    c.chunking_model as chunking_model,
+                    c.chunking_provider as chunking_provider
+                ORDER BY c.chunk_number
                 """,
                 notion_id=notion_id,
             )
 
             return [
                 {
-                    "content": record[
-                        "content"
-                    ],  # Content is already formatted with summary
+                    "content": record["content"],
+                    "chunk_number": record["chunk_number"],
+                    "total_chunks": record["total_chunks"],
                     "summary": record["summary"],
-                    "token_count": None,  # Memgraph doesn't store token counts
+                    "token_count": record["token_count"],
+                    "chunking_model": record["chunking_model"],
+                    "chunking_provider": record["chunking_provider"],
                 }
                 for record in result
             ]
@@ -349,7 +336,13 @@ class MemgraphStore(DocumentStore):
     def add_entity_reference(
         self, entity_name: str, notion_id: str, timestamp: str
     ) -> None:
-        """Add a reference from a note to an entity."""
+        """Add a reference from a note to an entity.
+
+        Args:
+            entity_name: Name of the entity
+            notion_id: ID of the note referencing the entity
+            timestamp: When the reference was created
+        """
         with self.driver.session() as session:
             session.run(
                 """
@@ -367,7 +360,14 @@ class MemgraphStore(DocumentStore):
             )
 
     def remove_note_references(self, notion_id: str) -> Set[str]:
-        """Remove all references from a note and return orphaned entities."""
+        """Remove all references from a note and return orphaned entities.
+
+        Args:
+            notion_id: ID of the note
+
+        Returns:
+            Set of entity names that no longer have any references
+        """
         orphaned_entities = set()
         with self.driver.session() as session:
             # Delete source references and collect orphaned entities
@@ -393,7 +393,11 @@ class MemgraphStore(DocumentStore):
         return orphaned_entities
 
     def delete_entities(self, entity_names: Set[str]) -> None:
-        """Delete specified entities."""
+        """Delete specified entities.
+
+        Args:
+            entity_names: Set of entity names to delete
+        """
         if not entity_names:
             return
 

@@ -25,12 +25,22 @@ CHUNK 1 SUMMARY:
 [1-2 sentence summary]
 
 CHUNK 1 CONTENT:
+# [Document Title]
+
 [Chunk content]
 
 CHUNK 2 SUMMARY:
 [1-2 sentence summary]
 
 CHUNK 2 CONTENT:
+# [Document Title]
+
 [Chunk content]
 
 Do **not** add any explanations, notes, or extra text outside this format.
+
+Note: Each chunk MUST maintain this exact structure:
+1. Summary is first
+2. Document title as "# [Document Title]" on its own line after summary
+3. One blank line after title
+4. Chunk content

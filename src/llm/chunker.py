@@ -39,18 +39,21 @@ class ChunkingLLM:
         self.template = """
 {instructions}
 
-Below is the text to chunk. Process ONLY the text between the [START] and [END] markers:
+Below is the text to chunk. Replace [Document Title] with the title. Process ONLY the text between the [START] and [END] markers:
+
+Title: {title}
 
 [START]
 {text}
 [END]
 """
 
-    def chunk_text(self, text: str) -> List[TextChunk]:
+    def chunk_text(self, text: str, title: str = "Untitled") -> List[TextChunk]:
         """Split text into semantic chunks using LLM.
 
         Args:
             text: Text content to chunk
+            title: Document title to include in chunks
 
         Returns:
             List of TextChunk objects containing chunks and metadata
@@ -60,9 +63,11 @@ Below is the text to chunk. Process ONLY the text between the [START] and [END] 
         current_content = []
 
         try:
-            # Invoke LLM with the templated prompt
+            # Invoke LLM with the templated prompt including title
             response = self.llm.invoke(
-                self.template.format(instructions=self.prompt_text, text=text)
+                self.template.format(
+                    instructions=self.prompt_text, text=text, title=title
+                )
             )
             # Extract content from AIMessage or string response
             content = (
@@ -79,9 +84,12 @@ Below is the text to chunk. Process ONLY the text between the [START] and [END] 
                 if line.startswith("CHUNK") and "SUMMARY:" in line:
                     # If we have an existing chunk, save it
                     if current_content and current_summary:
+                        content_lines = "\n".join(current_content)
                         chunks.append(
                             TextChunk(
-                                text="\n".join(current_content), summary=current_summary
+                                text=content_lines,
+                                summary=current_summary,
+                                title=title,
                             )
                         )
                         current_content = []
@@ -95,8 +103,13 @@ Below is the text to chunk. Process ONLY the text between the [START] and [END] 
 
             # Add the last chunk
             if current_content and current_summary:
+                content_lines = "\n".join(current_content)
                 chunks.append(
-                    TextChunk(text="\n".join(current_content), summary=current_summary)
+                    TextChunk(
+                        text=content_lines,
+                        summary=current_summary,
+                        title=title,
+                    )
                 )
 
             # Log chunks at debug level
@@ -112,40 +125,85 @@ Below is the text to chunk. Process ONLY the text between the [START] and [END] 
 
             if not chunks:
                 logger.warning("No chunks created, falling back to chunking algorithm")
-                return self.fallback_chunk_text(text)
+                return self.fallback_chunk_text(text, title=title)
 
             return chunks
 
         except Exception as e:
             logger.error(f"LLM chunking failed: {str(e)}")
-            return self.fallback_chunk_text(text)
+            return self.fallback_chunk_text(text, title=title)
+
+    @staticmethod
+    def merge_adjacent_chunks(chunk1: TextChunk, chunk2: TextChunk) -> TextChunk:
+        """Merge two chunks into one.
+
+        Args:
+            chunk1: First chunk
+            chunk2: Second chunk
+
+        Returns:
+            Merged TextChunk
+        """
+        merged_text = chunk1.text + "\n" + chunk2.text
+        merged_summary = f"{chunk1.summary}; {chunk2.summary}"
+        return TextChunk(
+            text=merged_text,
+            summary=merged_summary,
+            title=chunk1.title,  # Keep title from first chunk
+        )
 
     @staticmethod
     def merge_small_chunks(chunks: List[TextChunk]) -> List[TextChunk]:
-        """Merge small final chunks with their predecessor if possible.
+        """Merge small chunks with adjacent chunks where possible.
 
         Args:
             chunks: List of chunks to process
 
         Returns:
-            List of chunks with small final chunks merged if appropriate
+            List of chunks with small chunks merged where appropriate
         """
         if len(chunks) < 2:
             return chunks
 
-        # Check if final chunk is small
         tokenizer = tiktoken.get_encoding(TOKENIZER_MODEL)
-        final_tokens = len(tokenizer.encode(chunks[-1].text))
+        i = 0
+        while i < len(chunks):
+            token_count = len(tokenizer.encode(chunks[i].text))
 
-        if final_tokens < 100:
-            # Check if merging with previous chunk would be reasonable
-            prev_tokens = len(tokenizer.encode(chunks[-2].text))
-            if prev_tokens + final_tokens <= 1200:
-                # Merge the chunks
-                merged_text = chunks[-2].text + "\n" + chunks[-1].text
-                merged_summary = f"{chunks[-2].summary}; {chunks[-1].summary}"
-                merged_chunk = TextChunk(text=merged_text, summary=merged_summary)
-                return chunks[:-2] + [merged_chunk]
+            # Check if current chunk is small
+            if token_count < 35:
+                merged = False
+
+                # Try merging with next chunk if available
+                if i < len(chunks) - 1:
+                    next_tokens = len(tokenizer.encode(chunks[i + 1].text))
+                    if token_count + next_tokens <= 1200:
+                        merged_chunk = ChunkingLLM.merge_adjacent_chunks(
+                            chunks[i], chunks[i + 1]
+                        )
+                        chunks[i] = merged_chunk
+                        chunks.pop(i + 1)
+                        merged = True
+                        logger.debug(
+                            f"Merged small chunk (size {token_count}) with next chunk (size {next_tokens})"
+                        )
+                        continue
+
+                # If we couldn't merge forward and there's a previous chunk, try merging backward
+                if not merged and i > 0:
+                    prev_tokens = len(tokenizer.encode(chunks[i - 1].text))
+                    if token_count + prev_tokens <= 1200:
+                        merged_chunk = ChunkingLLM.merge_adjacent_chunks(
+                            chunks[i - 1], chunks[i]
+                        )
+                        chunks[i - 1] = merged_chunk
+                        chunks.pop(i)
+                        logger.debug(
+                            f"Merged small chunk (size {token_count}) with previous chunk (size {prev_tokens})"
+                        )
+                        continue
+
+            i += 1
 
         return chunks
 
@@ -162,25 +220,87 @@ Below is the text to chunk. Process ONLY the text between the [START] and [END] 
         if not chunks:
             return False
 
-        # Check chunk sizes are reasonable
         tokenizer = tiktoken.get_encoding(TOKENIZER_MODEL)
 
         # For single chunks, only verify they have a summary
         if len(chunks) == 1:
-            return bool(chunks[0].summary)
+            has_summary = bool(chunks[0].summary)
+            token_count = len(tokenizer.encode(chunks[0].text))
+            if not has_summary:
+                logger.warning("Single chunk missing summary")
+                return False
+            if token_count > 1200:
+                logger.warning(
+                    f"Single chunk size {token_count} tokens exceeds maximum 1200"
+                )
+                return False
+            return True
 
-        # For multiple chunks, validate size ranges
+        # First pass: attempt to merge any small chunks
+        i = 0
+        while i < len(chunks):
+            token_count = len(tokenizer.encode(chunks[i].text))
+            logger.debug(f"Chunk {i+1} token count: {token_count}")
+
+            if token_count < 35:
+                merged = False
+                # Try merging with next chunk
+                if i < len(chunks) - 1:
+                    next_tokens = len(tokenizer.encode(chunks[i + 1].text))
+                    if token_count + next_tokens <= 1200:
+                        chunks[i] = ChunkingLLM.merge_adjacent_chunks(
+                            chunks[i], chunks[i + 1]
+                        )
+                        chunks.pop(i + 1)
+                        merged = True
+                        logger.debug(
+                            f"Merged small chunk with next chunk during validation"
+                        )
+                        continue
+
+                # Try merging with previous chunk
+                if not merged and i > 0:
+                    prev_tokens = len(tokenizer.encode(chunks[i - 1].text))
+                    if token_count + prev_tokens <= 1200:
+                        chunks[i - 1] = ChunkingLLM.merge_adjacent_chunks(
+                            chunks[i - 1], chunks[i]
+                        )
+                        chunks.pop(i)
+                        i -= 1
+                        logger.debug(
+                            f"Merged small chunk with previous chunk during validation"
+                        )
+                        continue
+
+            # Check if chunk is too large
+            if token_count > 1200:
+                logger.warning(
+                    f"Chunk {i+1} size {token_count} tokens exceeds maximum 1200"
+                )
+                chunks.pop(i)
+                continue
+
+            i += 1
+
+        if not chunks:
+            logger.warning("All chunks were filtered out during validation")
+            return False
+
+        # Verify all remaining chunks have summaries and are properly sized
         for i, chunk in enumerate(chunks, 1):
+            if not chunk.summary:
+                logger.warning(f"Chunk {i} missing summary")
+                return False
+
             token_count = len(tokenizer.encode(chunk.text))
-            logger.debug(f"Chunk {i} token count: {token_count}")
             if token_count < 35 or token_count > 1200:
                 logger.warning(
-                    f"Chunk size {token_count} tokens is outside ideal range"
+                    f"Chunk {i} size {token_count} tokens is outside range 35-1200"
                 )
                 return False
 
-        # Verify all chunks have summaries
-        return all(chunk.summary for chunk in chunks)
+        logger.debug(f"Validation complete - {len(chunks)} valid chunks remaining")
+        return True
 
     def fallback_chunk_text(
         self,
@@ -188,6 +308,7 @@ Below is the text to chunk. Process ONLY the text between the [START] and [END] 
         target_tokens: int = 500,
         overlap_tokens: int = 75,
         min_chunk_tokens: int = 100,
+        title: str = "Untitled",
     ) -> List[TextChunk]:
         """Create overlapping chunks when LLM chunking fails.
 
@@ -196,6 +317,7 @@ Below is the text to chunk. Process ONLY the text between the [START] and [END] 
             target_tokens: Target size for each chunk in tokens
             overlap_tokens: Number of tokens to overlap between chunks
             min_chunk_tokens: Minimum chunk size - smaller chunks will be merged with previous
+            title: Document title to include in chunks
 
         Returns:
             List of TextChunk objects
@@ -211,7 +333,11 @@ Below is the text to chunk. Process ONLY the text between the [START] and [END] 
             chunk_text = tokenizer.decode(chunk_tokens)
 
             # Create chunk
-            chunk = TextChunk(text=chunk_text, token_count=len(chunk_tokens))
+            chunk = TextChunk(
+                text=chunk_text,
+                token_count=len(chunk_tokens),
+                title=title,  # Include title in fallback chunks too
+            )
             chunks.append(chunk)
 
             # Advance position by target size (overlap will be added on next iteration)
@@ -225,5 +351,32 @@ Below is the text to chunk. Process ONLY the text between the [START] and [END] 
                 chunks[-1].text = final_text
                 chunks[-1].token_count = len(final_tokens)
                 break
+
+        # Try to generate summaries for each chunk
+        for chunk in chunks:
+            try:
+                # Generate summary using LLM
+                summary_prompt = f"Please provide a brief, 1-2 sentence summary of the following text:\n\n{chunk.text}"
+                summary_response = self.llm.invoke(summary_prompt)
+
+                # Extract summary from response
+                summary = (
+                    summary_response.content
+                    if hasattr(summary_response, "content")
+                    else str(summary_response)
+                )
+
+                # Update chunk with summary and metadata
+                chunk.summary = summary.strip()
+                chunk.summary_model = self.llm.__class__.__name__
+                chunk.summary_provider = getattr(self.llm, "provider_name", "unknown")
+
+                logger.debug(f"Generated summary for fallback chunk: {chunk.summary}")
+            except Exception as e:
+                logger.warning(
+                    f"Failed to generate summary for fallback chunk: {str(e)}"
+                )
+                # Continue without summary rather than failing the whole process
+                continue
 
         return chunks
